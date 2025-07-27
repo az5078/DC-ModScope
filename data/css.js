@@ -7,7 +7,7 @@ const css = `
     border:1px solid #ddd;
     box-shadow:0 3px 12px rgba(0,0,0,.15);
     }
-
+    
     .gallscope-light-theme #${this.#config.UI.SCOPE_BOX_ID} .header {
     color:#000;
     }
@@ -141,7 +141,7 @@ const css = `
     background-color:#007bff;
     color:#fff;
     }
-    
+
     .gallscope-light-theme #${this.#config.UI.SCOPE_INPUT_MODAL_ID} .modal-cancel-btn {
     background-color:#f1f3f5;
     color:#333;
@@ -1115,7 +1115,7 @@ const css = `
     color:#fff;
     }
     
-    #${this.#config.UI.TOGGLE_BUTTON_ID}  {
+    #${this.#config.UI.TOGGLE_BUTTON_ID} {
     position: fixed;
     bottom: 25px;
     right: 25px;
@@ -1136,8 +1136,8 @@ const css = `
     }
 
     #${this.#config.UI.TOGGLE_BUTTON_ID}:hover {
-     transform: scale(1.1);
-     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .gallscope-dark-theme #${this.#config.UI.TOGGLE_BUTTON_ID} {
@@ -1148,27 +1148,29 @@ const css = `
     /* --- <<<< 새롭게 추가/변경된 하이라이트 스타일 시작 >>>> --- */
 
     .gallscope-light-theme {
-        --gallscope-highlight-bg: #eaf2ff; /* 연한 푸른색 배경 */
-        --gallscope-highlight-border: #c0d8ff; /* 살짝 진한 푸른색 테두리 */
+    --gallscope-highlight-bg: #eaf2ff; /* 연한 푸른색 배경 */
+    --gallscope-highlight-border: #c0d8ff; /* 살짝 진한 푸른색 테두리 */
     }
+
     .gallscope-dark-theme {
-        --gallscope-highlight-bg: rgba(100, 160, 255, 0.35); /* 희미한 푸른빛 배경 */
-        --gallscope-highlight-border: rgba(120, 180, 255, 0.3); /* 은은한 푸른색 테두리 */
+    --gallscope-highlight-bg: rgba(100, 160, 255, 0.35); /* 희미한 푸른빛 배경 */
+    --gallscope-highlight-border: rgba(120, 180, 255, 0.3); /* 은은한 푸른색 테두리 */
     }
 
     .${this.#config.UI.NEW_USER_HIGHLIGHT_CLASS} .nickname {
-        background-color: var(--gallscope-highlight-bg);
-        border: 1px solid var(--gallscope-highlight-border);
-        border-radius: 4px;
-        padding: 1px 4px;
-        margin: -2px -5px; /* 패딩/테두리로 인한 레이아웃 밀림 방지 */
-        display: inline-block;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
+    background-color: var(--gallscope-highlight-bg);
+    border: 1px solid var(--gallscope-highlight-border);
+    border-radius: 4px;
+    padding: 1px 4px;
+    margin: -2px -5px; /* 패딩/테두리로 인한 레이아웃 밀림 방지 */
+    display: inline-block;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     /* --- <<<< 새롭게 추가/변경된 하이라이트 스타일 종료 >>>> --- */
 
     /* --- <<<< CSS for DC-ModTools >>>> --- */
+    
     .DCMOD_DELETABLE {
     color: #a9a9a9;
     font-size: 11px;
@@ -1198,7 +1200,6 @@ const css = `
     top:20px;
     padding: 5px 5px;
     border-radius: 3px;
-
     position: absolute;
     z-index: 1;
     opacity: 0;
@@ -1276,6 +1277,7 @@ const css = `
     width: 60px;
     box-sizing: border-box;
     }
+
     span.DCMOD_SPAN {
     vertical-align: middle;
     width: 120px;
@@ -1284,6 +1286,7 @@ const css = `
     background-color:#fff;
     color:#000;
     }
+
     div.DCMOD_YN_DIV {
     text-align: center;
     background-color:#fff;
@@ -1310,10 +1313,11 @@ const css = `
     }
 
     tr.image_box:not(.DCMOD_DARKBG) {
-        background-color: #eee !important;
+    background-color: #eee !important;
     }
+
     tr.image_box.DCMOD_DARKBG) {
-        background-color: #000 !important;
+    background-color: #000 !important;
     }
 
     tr.dci_visiblecheck {
@@ -1330,12 +1334,15 @@ const css = `
     div.DCMOD_REPLY_REDBG {
     background-color:#fdd;
     }
+
     .DCMOD_REDBG {
     background-color: #fdd;
     }
+
     .DCMOD_REDBG_2 {
     background-color: #f99;
     }
+
     .DCMOD_YELLOWBG {
     background-color:#fafad2
     }
@@ -1357,31 +1364,34 @@ const css = `
     }
 
     .DCMOD_del-popup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-		font-size: 12px;
-		font-weight: bold;
-        z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 999;
     }
+
     .DCMOD_del-popup-content {
-        background-color: white;
-        padding: 20px;
-        text-align: center;
-        width: 400px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
+
     .DCMOD_del-popup-close {
-        float: right;
-        cursor: pointer;
-        color:red;
+    float: right;
+    cursor: pointer;
+    color:red;
     }
+
     #DCMOD_IDBPOPUP {
     position: absolute;
     top: 0px;
@@ -1394,25 +1404,30 @@ const css = `
     overflow: auto;
     padding: 10px;
     }
+
     #DCMOD_IDBPOPUP_CLOSE {
     position: absolute;
     top: 5px;
     right: 5px;
     cursor: pointer;
     }
+
     table.idbData {
     width: 100%;
     border-collapse: collapse;
     table-layout: auto;
     }
+
     th.idbData, td.idbData {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
     }
+
     #DCMOD_COPYPOSTCONT, #DCMOD_CHECKPOST, #DCMOD_PARSEBANLIST, #DCMOD_READBANLIST, #DCMOD_CHECK_REPLY_IP, #DCMOD_OPENSEARCH {
     color:green;
     }
+
     #DCMOD_SEARCH_BANLIST_POPUP {
     position: fixed;
     top: 50%;
@@ -1425,6 +1440,7 @@ const css = `
     z-index: 1000;
     border-radius: 8px;
     }
+
     #DCMOD_SEARCH_BANLIST_CLOSE {
     background-color: #ff4d4d;
     border: none;
@@ -1434,6 +1450,7 @@ const css = `
     float: right;
     border-radius: 4px;
     }
+
     #DCMOD_SEARCH_BANLIST_OVERLAY {
     position: fixed;
     top: 0;
@@ -1443,6 +1460,7 @@ const css = `
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
     }
+
     #DCMOD_SEARCH_BANLIST_OK {
     background-color: #4d55ff;
     border: none;
@@ -1452,14 +1470,17 @@ const css = `
     float: right;
     border-radius: 4px;
     }
+
     canvas.DCMOD_ADJUST_IMAGE {
     border: 1px solid black;
     }
+
     .page_head {
     height: auto !important;
     margin-bottom: 8px !important;
     padding-top: 4px !important;
     }
+
     .DCMOD_modal-overlay {
     position: fixed;
     top: 0;
@@ -1472,6 +1493,7 @@ const css = `
     align-items: center;
     z-index: 99999;
     }
+
     .DCMOD_modal {
     width: 400px;
     background-color: white;
@@ -1480,15 +1502,18 @@ const css = `
     padding: 16px;
     position: relative;
     }
+
     .DCMOD_modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     }
+
     .DCMOD_modal-title {
     font-weight: bold;
     font-size: 18px;
     }
+
     .DCMOD_modal-close-button {
     padding: 8px 16px;
     background-color: #ff4d4d;
@@ -1497,37 +1522,44 @@ const css = `
     border-radius: 4px;
     cursor: pointer;
     }
+
     .DCMOD_modal-body {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     }
+
     .DCMOD_modal-info {
     flex: 1;
     text-align: left;
     color: #555;
     font-size: 14px;
     }
+
     .DCMOD_modal-info-right {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     flex: 1;
     }
+
     .DCMOD_modal-input-area {
     width: 100%;
     height: 80px;
     padding: 8px;
     }
+
     .DCMOD_modal-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     }
+
     .DCMOD_modal-options .DCMOD_modal-option-label {
     margin-right: 8px;
     font-size: 14px;
     }
+
     .DCMOD_modal-submit-button {
     padding: 8px 16px;
     background-color: #007bff;
@@ -1536,6 +1568,7 @@ const css = `
     border-radius: 4px;
     cursor: pointer;
     }
+
     .DCMOD_modal-comment-container {
     width: calc(100% - 32px);
     margin: 0 auto;
@@ -1546,10 +1579,12 @@ const css = `
     max-height: 60vh;
     overflow-y: scroll;
     }
+
     .DCMOD_modal-comment {
     border-bottom: 1px solid #ddd;
     padding: 8px 0;
     }
+
     .DCMOD_modal-comment-header {
     display: flex;
     justify-content: space-between;
@@ -1557,17 +1592,20 @@ const css = `
     color: #555;
     font-weight: bold;
     }
+
     .DCMOD_modal-comment-body {
     margin-top: 4px;
     font-size: 12px;
     color: #333;
     white-space: pre-wrap;
     }
+
     .DCMOD_modal-pagination {
     text-align: center;
     margin-top: 16px;
     font-size: 14px;
     }
+
     .DCMOD_modal-pagination button {
     background: none;
     border: none;
@@ -1575,17 +1613,21 @@ const css = `
     margin: 0 4px;
     color: #007bff;
     }
+
     .DCMOD_modal-pagination button.active {
     font-weight: bold;
     text-decoration: underline;
     color: #000;
     }
+
     .DCMOD_modal-pagination button:hover {
     text-decoration: underline;
     }
+    
     .DCMOD_cursor_hand {
     cursor: pointer;
     }
+
     .DCMOD_IDX_SEARCH_modal-content {
     position: absolute;
     background-color: #fff;
@@ -1597,9 +1639,9 @@ const css = `
     overflow: hidden;
     border-radius: 8px;
     z-index: 9999;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-header {
+    .DCMOD_IDX_SEARCH_modal-header {
     padding: 10px;
     background-color: #f2f2f2;
     cursor: move;
@@ -1608,80 +1650,81 @@ const css = `
     align-items: center;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-left-area {
+    .DCMOD_IDX_SEARCH_modal-left-area {
     display: flex;
     align-items: center;
     gap: 10px;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-dropdown {
+    .DCMOD_IDX_SEARCH_modal-dropdown {
     padding: 5px;
     font-size: 14px;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-search-button {
+    .DCMOD_IDX_SEARCH_modal-search-button {
     padding: 5px 10px;
     font-size: 14px;
     cursor: pointer;
     border: 2px solid #000;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-buttons {
+    .DCMOD_IDX_SEARCH_modal-buttons {
     display: flex;
     gap: 10px;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-close,
-.DCMOD_IDX_SEARCH_modal-toggle {
+    .DCMOD_IDX_SEARCH_modal-close,
+    .DCMOD_IDX_SEARCH_modal-toggle {
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-body {
+    .DCMOD_IDX_SEARCH_modal-body {
     padding: 10px;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-table {
+    .DCMOD_IDX_SEARCH_modal-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 11px;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-table th, .DCMOD_IDX_SEARCH_modal-table td {
+    .DCMOD_IDX_SEARCH_modal-table th, .DCMOD_IDX_SEARCH_modal-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-table th {
+    .DCMOD_IDX_SEARCH_modal-table th {
     background-color: #f2f2f2;
-}
-.DCMOD_IDX_SEARCH_modal-table th.mini {
+    }
+    
+    .DCMOD_IDX_SEARCH_modal-table th.mini {
     background-color: #f2f2f2;
     width:10%;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-pagination {
+    .DCMOD_IDX_SEARCH_modal-pagination {
     padding: 10px;
     text-align: center;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-pagination a {
+    .DCMOD_IDX_SEARCH_modal-pagination a {
     margin: 0 5px;
     text-decoration: none;
     color: #007bff;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-pagination a:hover {
+    .DCMOD_IDX_SEARCH_modal-pagination a:hover {
     text-decoration: underline;
-}
+    }
 
-.DCMOD_IDX_SEARCH_modal-input {
+    .DCMOD_IDX_SEARCH_modal-input {
     padding: 5px;
     font-size: 14px;
     width: 150px;
-}
+    }
 `
