@@ -19,7 +19,7 @@
 // @grant            GM_unregisterMenuCommand
 // @grant            GM_listValues
 // @grant            GM_deleteValue
-// @icon             https://i.imgur.com/JPUBQQd.png
+// @icon             https://pbs.twimg.com/media/GmykGIJbAAA98q1.png:orig
 // @run-at           document-end
 // @license          MIT
 // ==/UserScript==
@@ -789,9 +789,9 @@
             if (!res.ok) throw new Error("CSS fetch failed")
             else console.log('CSS loaded successfully');
         
-            let cssRaw = await res.text();
+            const cssRaw = await res.text();
 
-            cssRaw = cssRaw
+            const css = cssRaw
                 .replaceAll('___SCOPE_BOX_ID___', this.#config.UI.SCOPE_BOX_ID)
                 .replaceAll('___TOGGLE_BUTTON_ID___', this.#config.UI.TOGGLE_BUTTON_ID)
                 .replaceAll('___ICON_URL___', this.#config.ICON_URL)
@@ -801,9 +801,8 @@
                 .replaceAll('___GRAPH_MODAL_ID___', this.#config.UI.GRAPH_MODAL_ID)
                 .replaceAll('___AI_MODAL_ID___', this.#config.UI.AI_MODAL_ID)
                 .replaceAll('___TOOLTIP_ID___', this.#config.UI.TOOLTIP_ID)
-                .replaceAll('___NEW_USER_HIGHLIGHT_CLASS___', this.#config.UI.NEW_USER_HIGHLIGHT_CLASS);
-
-            const css = cssRaw.replace(/\s+/g, ' ').trim();
+                .replaceAll('___NEW_USER_HIGHLIGHT_CLASS___', this.#config.UI.NEW_USER_HIGHLIGHT_CLASS)
+                .replace(/\s+/g, ' ').trim();
 
             const styleEl = document.createElement('style');
             styleEl.id = 'dc-modscope-styles';
@@ -1233,27 +1232,27 @@
 
         injectUserUid() {
             //
-            if (isMobile) {
-                this.#log('모바일 페이지에서는 UID 표시를 지원하지 않습니다.');
+            const writerTds = galleryParser.doc.querySelectorAll(this.#config.SELECTORS.POST_WRITER);
+            if (!writerTds || writerTds.length === 0) {
+                this.#log('작성자 셀을 찾을 수 없습니다. UID 표시를 건너뜁니다.');
                 return;
             }
-            else {
-                const writerTds = document.querySelectorAll(this.#config.SELECTORS.POST_WRITER);
-                if (!writerTds || writerTds.length === 0) {
-                    this.#log('작성자 셀을 찾을 수 없습니다. UID 표시를 건너뜁니다.');
-                    return;
-                }
 
-                writerTds.forEach(td => {
-                    const uid = td.dataset.uid?.trim();
-                    if (uid) {
-                        const uidSpan = document.createElement('span');
-                        uidSpan.className = 'gallscope-uid';
-                        uidSpan.textContent = `(${uid})`;
-                        td.appendChild(uidSpan);
-                    }
-                });
+            if (isMobile) {
+                // 모바일에서는 UID 표시를 하지 않음
+                const MobileWriterTds = document.querySelectorAll(this.#config.SELECTORS.POST_WRITER_MOBILE);
+                return;
             }
+
+            writerTds.forEach(td => {
+                const uid = td.dataset.uid?.trim();
+                if (uid) {
+                    const uidSpan = document.createElement('span');
+                    uidSpan.className = 'gallscope-uid';
+                    uidSpan.textContent = `(${uid})`;
+                    td.appendChild(uidSpan);
+                }
+            });
         }
 
         resetScopeMode() {
@@ -1337,6 +1336,7 @@
         }
 
         getWriterInfo(tr) {
+            // TODO: 갱차 정보 추가
             const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
             if (!writerTd) return {
                 type: this.#config.CONSTANTS.USER_TYPES.UNKNOWN,
@@ -1368,6 +1368,9 @@
             } else {
                 displayName = key;
             }
+
+
+
             return {
                 type,
                 key,
@@ -1976,20 +1979,30 @@
 
         async init() {
             await this.#runCacheMigration(); // 2.1.0 부터 삭제할 것
+
             this.#utils.log('Core', '갤스코프 초기화 시작...');
+
             this.#preloadResources();
+
+            await this.#loadGithubData();
+
             if (!galleryParser.doc.querySelector(this.#config.SELECTORS.POST_ROW)) {
                 this.#utils.log('Core', '게시물 목록을 찾을 수 없어 200ms 후 재시도합니다.');
                 return setTimeout(() => this.init(), 200);
             }
+
             this.#setupUserPopupObserver();
+
             this.#state.chartJsLoadPromise = this.#loadChartJs().catch(e => console.error('[Gallscope] Chart.js 로딩 중 심각한 오류 발생', e));
 
             await this.#loadPersistentState();
 
             this.#promptBuilder = new PromptBuilder(this.#uiManager.getGalleryName());
+
             await this.#uiManager.injectStyles();
+
             this.#uiManager.updateTheme();
+
             await this.#setupMenuCommands();
 
             this.#uiManager.renderToggleButton(this.#handleToggleClick.bind(this));
@@ -1999,8 +2012,86 @@
             }
 
             this.#setupObserversAndListeners();
+
             this.#utils.log('Core', '갤스코프 초기화 완료.');
         }
+
+        async #loadGithubData() {
+            const cacheTime = await GM_getValue('IP_LIST_CACHE_TIME', 0);
+            const now = Date.now();
+            const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24시간
+
+            if (now - cacheTime > CACHE_DURATION) {
+                try {
+                    this.#utils.log('Core', 'IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 업데이트 시작...');
+                    this.#utils.log('Core', 'GitHub에서 최신 데이터를 가져옵니다...');
+
+                    const IP_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/ip_list.json')
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch IP list:', err);
+                        return [];
+                    });
+
+                    const IP_OWNER_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/ip_owner_list.json')
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch IP owner list:', err);
+                        return [];
+                    });
+
+                    const VPN_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/vpn_list.json')
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch VPN list:', err);
+                        return [];
+                    });
+
+                    const MGALL_PERMABAN_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/mgall_permaban_list.json')
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch MGALL permaban info:', err);
+                        return [];
+                    });
+
+                    this.#utils.log('Core', 'GitHub에서 데이터 가져오기 완료.');
+
+                    await GM_setValue('IP_LIST', IP_LIST);
+                    await GM_setValue('IP_OWNER_LIST', IP_OWNER_LIST);
+                    await GM_setValue('VPN_LIST', VPN_LIST);
+                    await GM_setValue('MGALL_PERMABAN_LIST', MGALL_PERMABAN_LIST);
+
+                    await GM_setValue('IP_LIST_CACHE_TIME', now);
+
+                    this.#utils.log('Core', '캐시에 데이터 저장 완료.');
+                    
+                    this.#config.CONSTANTS.IP_LIST = IP_LIST;
+                    this.#config.CONSTANTS.IP_LIST_KEY = Object.keys(IP_OWNER_LIST);
+                    this.#config.CONSTANTS.IP_OWNER_LIST = IP_OWNER_LIST;
+                    this.#config.CONSTANTS.VPN_LIST = VPN_LIST;
+                    this.#config.CONSTANTS.VPN_LIST_KEY = Object.keys(VPN_LIST);
+                    this.#config.CONSTANTS.MGALL_PERMABAN_LIST = MGALL_PERMABAN_LIST;
+                    this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY = Object.keys(MGALL_PERMABAN_LIST);
+
+                    this.#utils.log('Core', 'IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 업데이트 완료.');
+                } catch (err) {
+                    console.error('Failed to fetch IP list:', err);
+                }
+            }
+            else {
+                this.#utils.log('Core', 'IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보가 캐시에 있습니다. 캐시된 데이터를 사용합니다.');
+
+                this.#config.CONSTANTS.IP_LIST = await GM_getValue('IP_LIST', []);
+                this.#config.CONSTANTS.IP_LIST_KEY = Object.keys(await GM_getValue('IP_OWNER_LIST', {}));
+                this.#config.CONSTANTS.IP_OWNER_LIST = await GM_getValue('IP_OWNER_LIST', {});
+                this.#config.CONSTANTS.VPN_LIST = await GM_getValue('VPN_LIST', {});
+                this.#config.CONSTANTS.VPN_LIST_KEY = Object.keys(this.#config.CONSTANTS.VPN_LIST);
+                this.#config.CONSTANTS.MGALL_PERMABAN_LIST = await GM_getValue('MGALL_PERMABAN_LIST', {});
+                
+                this.#utils.log('Core', '캐시된 IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 로드 완료.');
+            }
+        }
+
         #showBoxAndAnalyze() {
             if (!this.#state.analysisBoxElement) {
                 this.runAnalysis();
@@ -2021,6 +2112,7 @@
                 this.#uiManager.setBoxVisibility(false);
             }
         }
+
         async #loadPersistentState() {
             try {
                 const savedPosition = await GM_getValue(this.#config.UI.GALLSCOPE_BOX_POSITION_ID, null);
@@ -3068,15 +3160,13 @@
                 alert('API 키 저장 중 오류가 발생했습니다.');
             }
         }
+
         #preloadResources() {
             const resource = {
                 href: this.#config.ICON_URL,
                 as: 'image'
             };
-            if (!galleryParser.doc) {
-                console.warn('galleryParser.doc is not ready yet.');
-                return;
-            }
+
             if (galleryParser.doc.querySelector(`link[rel="preload"][href="${resource.href}"]`)) return;
             const link = document.createElement('link');
             link.rel = 'preload';
@@ -3284,8 +3374,9 @@
     const config = {
         DEBUG_MODE: true,
         AI_SUMMARY_FEATURE_ENABLED: true,
-        ICON_URL: 'https://i.imgur.com/JPUBQQd.png',
+        ICON_URL: 'https://pbs.twimg.com/media/GmykGIJbAAA98q1.png:orig',
         CHARTJS_CDN_URL: 'https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js',
+        
         DRAG_EVENTS: {
             START: 'mousedown',
             MOVE: 'mousemove',
@@ -3303,15 +3394,22 @@
 
         SELECTORS: {
             POST_ROW: 'tr.ub-content.us-post',
+            POST_ROW_MOBILE: 'div.gall-detail-lnktb',
             POST_NOTICE_NUM: 'td.gall_num',
             POST_SUBJECT: 'td.gall_subject',
+            POST_SUBJECT_MOBILE: 'div.gall-detail-lnktb ul.ginfo li:nth-child(1)',
             POST_WRITER: 'td.gall_writer',
+            POST_WRITER_MOBILE: 'div.gall-detail-lnktb ul.ginfo li:nth-child(2)',
             POST_TITLE: 'td.gall_tit.ub-word > a',
             POST_VIEWS: 'td.gall_count',
+            POST_VIEWS_MOIBLE: 'div.gall-detail-lnktb ul.ginfo li:nth-child(4)',
             POST_RECOMMEND: 'td.gall_recommend',
+            POST_RECOMMEND_MOBILE: 'div.gall-detail-lnktb ul.ginfo li:nth-child(5) span',
             POST_REPLY_NUM: 'a.reply_numbox',
+            POST_REPLY_NUM_MOBILE: 'div.gall-detail-lnktb span.ct',
             POST_ICON_IMG: 'em.icon_img',
             POST_DATE: 'td.gall_date',
+            POST_DATE_MOBILE: 'div.gall-detail-lnktb ul.ginfo li:nth-child(3)',
             USER_POPUP_UL: 'ul.user_data_list',
         },
 
@@ -3387,6 +3485,13 @@
             LOW_ACTIVITY_POST_THRESHOLD: 5,
             LOW_ACTIVITY_EXPIRATION_HOURS: 48,
             LAST_PRUNING_TIME_PREFIX: 'gallscope_last_pruning_time_',
+            IP_LIST: null,
+            IP_OWNER_LIST: null,
+            IP_OWNER_LIST_KEY: null,
+            VPN_LIST: null,
+            VPN_LIST_KEY: null,
+            MGALL_PERMABAN_LIST: null,
+            MGALL_PERMABAN_LIST_KEY: null,
         },
 
         STATUS_LEVELS: [{
@@ -3406,6 +3511,7 @@
             icon: '🔴',
             textColor: '#dc3545'
         }],
+
         TEXTS: {
             REPORT_HEALTH_INTERPRETATIONS: [
                 '매우 안정적이고 활발한 상태입니다.',
