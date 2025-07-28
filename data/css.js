@@ -700,11 +700,9 @@ const css = `
     gap:10px;
     }
     
-    #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn,#$ {
-    this.#config.UI.SCOPE_INPUT_MODAL_ID;
-    }
-    
-    .modal-cancel-btn{padding:8px 16px;
+    #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn,
+    #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn {
+    padding:8px 16px;
     border:none;
     border-radius:5px;
     cursor:pointer;
