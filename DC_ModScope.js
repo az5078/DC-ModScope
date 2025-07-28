@@ -22,7 +22,7 @@
 // @icon             https://i.imgur.com/JPUBQQd.png
 // @run-at           document-end
 // @license          MIT
-// // ==/UserScript==
+// ==/UserScript==
 
 (async () => {
     'use strict';
