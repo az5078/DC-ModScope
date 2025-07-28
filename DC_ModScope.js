@@ -916,9 +916,22 @@
             
             console.log('Loading CSS from remote source...');
             const res = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/css.js');
-            console.log('Response status:', res.status);
             
-            if (!res.ok) throw new Error("CSS fetch failed");
+            if (!res.ok) throw new Error("CSS fetch failed")
+            else console.log('CSS loaded successfully');
+
+            css = css
+                .replaceAll('___SCOPE_BOX_ID___', this.#config.UI.SCOPE_BOX_ID)
+                .replaceAll('___TOGGLE_BUTTON_ID___', this.#config.UI.TOGGLE_BUTTON_ID)
+                .replaceAll('___ICON_URL___', this.#config.ICON_URL)
+                .replaceAll('___USER_POSTS_MODAL_ID___', this.#config.UI.USER_POSTS_MODAL_ID)
+                .replaceAll('___AI_USER_ANALYSIS_MODAL_ID___', this.#config.UI.AI_USER_ANALYSIS_MODAL_ID)
+                .replaceAll('___SCOPE_INPUT_MODAL_ID___', this.#config.UI.SCOPE_INPUT_MODAL_ID)
+                .replaceAll('___GRAPH_MODAL_ID___', this.#config.UI.GRAPH_MODAL_ID)
+                .replaceAll('___AI_MODAL_ID___', this.#config.UI.AI_MODAL_ID)
+                .replaceAll('___TOOLTIP_ID___', this.#config.UI.TOOLTIP_ID)
+                .replaceAll('___NEW_USER_HIGHLIGHT_CLASS___', this.#config.UI.NEW_USER_HIGHLIGHT_CLASS);
+
             const cssRaw = await res.text();
 
             const css = cssRaw.replace(/\s+/g, ' ').trim();
