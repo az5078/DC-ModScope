@@ -1355,16 +1355,16 @@
             };
         }
 
-        getMemo(type, key) {
+        getUserInfo(type, uid) {
             let isPermabanned = false;
             let permabanGall = [];
-            if (!target_id.includes('.')) {
+            if (!uid.includes('.')) {
                 //console.log('check permabanhistory '+target_id);
-                for (let cur of MGALL_PERMABAN_KEY) {
-                    for (let uid of MGALL_PERMABAN_INFO[cur]) {
-                        if (uid == target_id) {
+                for (let cur of this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY) {
+                    for (let bannedUid of this.#config.CONSTANTS.MGALL_PERMABAN_LIST[cur]) {
+                        if (uid == bannedUid) {
                             permabanGall.push(cur);
-                            isHavePermabanHistory = true;
+                            isPermabanned = true;
                         }
                     }
                 }
@@ -1374,6 +1374,8 @@
             if (DCMOD_MEMO[target_id] != undefined || isHavePermabanHistory) hasMemoOrPban = true;
             return [hasMemoOrPban, target_id, permabanGall, DCMOD_MEMO[target_id]];
         }
+
+        getIPInfo(key) {}
 
         getPostData(tr) {
             const titleEl = tr.querySelector(this.#config.SELECTORS.POST_TITLE);
