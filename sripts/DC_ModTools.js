@@ -769,6 +769,7 @@ if (DCMOD_USERINFO == undefined) {
     await GM.setValue('userinfo', DCMOD_USERINFO);
     //object userinfo -> ...gallname -> ...userid = {firstseen(obj), lastseen(obj)}
 }
+
 async function getmemo(target_id) {
     let isHavePermabanHistory = false;
     let permabanGall = [];
@@ -788,6 +789,7 @@ async function getmemo(target_id) {
     if (DCMOD_MEMO[target_id] != undefined || isHavePermabanHistory) hasMemoOrPban = true;
     return [hasMemoOrPban, target_id, permabanGall, DCMOD_MEMO[target_id]];
 }
+
 async function user_memo(target_id) {
     let data = undefined;
     if (DCMOD_MEMO[target_id] != undefined) {
@@ -1099,6 +1101,7 @@ function truncateString(str, allowedLen) {
     }
     return str.substring(0, Math.max(2, allowedLen - 3)) + '..';
 }
+
 let ubw_processing = false;
 async function process_ubwriter(nodel, noGmemo) {
     if (ubw_processing == true || SETTING_VAR['disableWriterInfo'] == true) return;

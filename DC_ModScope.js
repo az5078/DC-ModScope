@@ -1230,31 +1230,6 @@
             this.#log(`${isMobile ? '모바일' : 'PC'} 페이지 내 작성글 검색 UI 삽입 완료.`);
         }
 
-        injectUserUid() {
-            //
-            const writerTds = galleryParser.doc.querySelectorAll(this.#config.SELECTORS.POST_WRITER);
-            if (!writerTds || writerTds.length === 0) {
-                this.#log('작성자 셀을 찾을 수 없습니다. UID 표시를 건너뜁니다.');
-                return;
-            }
-
-            if (isMobile) {
-                // 모바일에서는 UID 표시를 하지 않음
-                const MobileWriterTds = document.querySelectorAll(this.#config.SELECTORS.POST_WRITER_MOBILE);
-                return;
-            }
-
-            writerTds.forEach(td => {
-                const uid = td.dataset.uid?.trim();
-                if (uid) {
-                    const uidSpan = document.createElement('span');
-                    uidSpan.className = 'gallscope-uid';
-                    uidSpan.textContent = `(${uid})`;
-                    td.appendChild(uidSpan);
-                }
-            });
-        }
-
         resetScopeMode() {
             this.#state.isUserSpecificScopeMode = false;
             this.#state.currentUserScopeTarget = null;
@@ -1336,7 +1311,7 @@
         }
 
         getWriterInfo(tr) {
-            // TODO: 갱차 정보 추가
+            // TODO: 갱차/메모 정보 추가
             const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
             if (!writerTd) return {
                 type: this.#config.CONSTANTS.USER_TYPES.UNKNOWN,
@@ -1369,13 +1344,35 @@
                 displayName = key;
             }
 
-
+            if (type !== this.#config.CONSTANTS.USER_TYPES.GUEST()) {
+                const memo = this.getMemo(type, key);
+            }
 
             return {
                 type,
                 key,
                 name: displayName
             };
+        }
+
+        getMemo(type, key) {
+            let isPermabanned = false;
+            let permabanGall = [];
+            if (!target_id.includes('.')) {
+                //console.log('check permabanhistory '+target_id);
+                for (let cur of MGALL_PERMABAN_KEY) {
+                    for (let uid of MGALL_PERMABAN_INFO[cur]) {
+                        if (uid == target_id) {
+                            permabanGall.push(cur);
+                            isHavePermabanHistory = true;
+                        }
+                    }
+                }
+            }
+            //[메모나갱차있는지여부, 타겟id, 갱차갤목록, 메모내용]
+            let hasMemoOrPban = false;
+            if (DCMOD_MEMO[target_id] != undefined || isHavePermabanHistory) hasMemoOrPban = true;
+            return [hasMemoOrPban, target_id, permabanGall, DCMOD_MEMO[target_id]];
         }
 
         getPostData(tr) {
@@ -2436,87 +2433,6 @@
             });
         }
 
-        async #highlightNewUsers(postRows) {
-            try {
-                const galleryId = galleryParser.galleryId;
-                if (!galleryId) return;
-
-                const cacheKey = `${this.#config.CONSTANTS.KNOWN_USERS_CACHE_PREFIX}${galleryId}`;
-
-                if (!this.#state.sessionCache || this.#state.sessionCache.galleryId !== galleryId) {
-                    const knownUsersData = await GM_getValue(cacheKey, []);
-                    this.#state.sessionCache = {
-                        galleryId: galleryId,
-                        userMap: new Map(knownUsersData.map(user => [user[0], {
-                            firstSeen: user[1],
-                            lastSeen: user[2],
-                            postCount: user[3]
-                        }])),
-                        isDirty: false
-                    };
-                    this.#utils.log('Cache', `${galleryId} 갤러리 캐시를 새로 로드했습니다. (${this.#state.sessionCache.userMap.size}개)`);
-                }
-                const { userMap } = this.#state.sessionCache;
-
-                const currentPostsMap = new Map();
-                postRows.forEach(tr => {
-                    const writerInfo = this.#calculator.getWriterInfo(tr);
-                    if (writerInfo.key !== 'unknown') {
-                        if (!currentPostsMap.has(writerInfo.key)) {
-                            currentPostsMap.set(writerInfo.key, []);
-                        }
-                        const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
-                        if (writerTd) currentPostsMap.get(writerInfo.key).push(writerTd);
-                    }
-                });
-
-                const currentUniqueKeys = [...currentPostsMap.keys()];
-                const newlyFoundKeys = currentUniqueKeys.filter(key => !userMap.has(key));
-
-                const totalUniqueUsersCount = currentUniqueKeys.length;
-                if (totalUniqueUsersCount > 0) {
-                    const newUserRatio = newlyFoundKeys.length / totalUniqueUsersCount;
-                    if (newUserRatio <= this.#config.CONSTANTS.NEW_USER_HIGHLIGHT_THRESHOLD) {
-                        this.#utils.log('NewUser', `${newlyFoundKeys.length}/${totalUniqueUsersCount} (${(newUserRatio * 100).toFixed(1)}%) - 하이라이트 활성화`);
-                        newlyFoundKeys.forEach(key => {
-                            const elements = currentPostsMap.get(key);
-                            elements.forEach(el => {
-                                el.classList.add(this.#config.UI.NEW_USER_HIGHLIGHT_CLASS);
-                            });
-                        });
-                    } else {
-                        this.#utils.log('NewUser', `새 유저 비율(${(newUserRatio * 100).toFixed(1)}%)이 임계값(${this.#config.CONSTANTS.NEW_USER_HIGHLIGHT_THRESHOLD * 100}%)을 초과하여 하이라이트를 건너뜁니다.`);
-                    }
-                }
-
-                const now = Math.floor(Date.now() / 1000);
-                let newUsersFoundOnPage = false;
-
-                currentUniqueKeys.forEach(key => {
-                    if (userMap.has(key)) {
-                        const userData = userMap.get(key);
-                        if (now - userData.lastSeen > 60) {
-                            userData.lastSeen = now;
-                            this.#state.sessionCache.isDirty = true;
-                        }
-                        userData.postCount++;
-                    } else {
-                        userMap.set(key, { firstSeen: now, lastSeen: now, postCount: 1 });
-                        newUsersFoundOnPage = true;
-                    }
-                });
-
-                if (newUsersFoundOnPage) {
-                    this.#state.sessionCache.isDirty = true;
-                }
-
-                await this.#pruneAndSaveCacheIfNeeded(galleryId);
-
-            } catch (e) {
-                console.error('[Gallscope] 새로운 유저 감지 기능 중 오류 발생:', e);
-            }
-        }
-
         async #pruneAndSaveCacheIfNeeded(galleryId) {
             if (!this.#state.sessionCache || !this.#state.sessionCache.isDirty) {
                 return;
@@ -2609,6 +2525,8 @@
                 await this.#highlightNewUsers(postRows);
             }
 
+            await this.#injectUserUid(postRows);
+
             if (this.#state.isBoxMovedByUser && this.#state.userBoxPosition) {
                 const {
                     top,
@@ -2618,6 +2536,118 @@
                 box.style.left = left;
             } else {
                 this.#uiManager.repositionBox();
+            }
+        }
+        
+        async #highlightNewUsers(postRows) {
+            try {
+                const galleryId = galleryParser.galleryId;
+                if (!galleryId) return;
+
+                const cacheKey = `${this.#config.CONSTANTS.KNOWN_USERS_CACHE_PREFIX}${galleryId}`;
+
+                if (!this.#state.sessionCache || this.#state.sessionCache.galleryId !== galleryId) {
+                    const knownUsersData = await GM_getValue(cacheKey, []);
+                    this.#state.sessionCache = {
+                        galleryId: galleryId,
+                        userMap: new Map(knownUsersData.map(user => [user[0], {
+                            firstSeen: user[1],
+                            lastSeen: user[2],
+                            postCount: user[3]
+                        }])),
+                        isDirty: false
+                    };
+                    this.#utils.log('Cache', `${galleryId} 갤러리 캐시를 새로 로드했습니다. (${this.#state.sessionCache.userMap.size}개)`);
+                }
+                const { userMap } = this.#state.sessionCache;
+
+                const currentPostsMap = new Map();
+                postRows.forEach(tr => {
+                    const writerInfo = this.#calculator.getWriterInfo(tr);
+                    if (writerInfo.key !== 'unknown') {
+                        if (!currentPostsMap.has(writerInfo.key)) {
+                            currentPostsMap.set(writerInfo.key, []);
+                        }
+                        const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
+                        if (writerTd) currentPostsMap.get(writerInfo.key).push(writerTd);
+                    }
+                });
+
+                const currentUniqueKeys = [...currentPostsMap.keys()];
+                const newlyFoundKeys = currentUniqueKeys.filter(key => !userMap.has(key));
+
+                const totalUniqueUsersCount = currentUniqueKeys.length;
+                if (totalUniqueUsersCount > 0) {
+                    const newUserRatio = newlyFoundKeys.length / totalUniqueUsersCount;
+                    if (newUserRatio <= this.#config.CONSTANTS.NEW_USER_HIGHLIGHT_THRESHOLD) {
+                        this.#utils.log('NewUser', `${newlyFoundKeys.length}/${totalUniqueUsersCount} (${(newUserRatio * 100).toFixed(1)}%) - 하이라이트 활성화`);
+                        newlyFoundKeys.forEach(key => {
+                            const elements = currentPostsMap.get(key);
+                            elements.forEach(el => {
+                                el.classList.add(this.#config.UI.NEW_USER_HIGHLIGHT_CLASS);
+                            });
+                        });
+                    } else {
+                        this.#utils.log('NewUser', `새 유저 비율(${(newUserRatio * 100).toFixed(1)}%)이 임계값(${this.#config.CONSTANTS.NEW_USER_HIGHLIGHT_THRESHOLD * 100}%)을 초과하여 하이라이트를 건너뜁니다.`);
+                    }
+                }
+
+                const now = Math.floor(Date.now() / 1000);
+                let newUsersFoundOnPage = false;
+
+                currentUniqueKeys.forEach(key => {
+                    if (userMap.has(key)) {
+                        const userData = userMap.get(key);
+                        if (now - userData.lastSeen > 60) {
+                            userData.lastSeen = now;
+                            this.#state.sessionCache.isDirty = true;
+                        }
+                        userData.postCount++;
+                    } else {
+                        userMap.set(key, { firstSeen: now, lastSeen: now, postCount: 1 });
+                        newUsersFoundOnPage = true;
+                    }
+                });
+
+                if (newUsersFoundOnPage) {
+                    this.#state.sessionCache.isDirty = true;
+                }
+
+                await this.#pruneAndSaveCacheIfNeeded(galleryId);
+
+            } catch (e) {
+                console.error('[Gallscope] 새로운 유저 감지 기능 중 오류 발생:', e);
+            }
+        }
+
+        async #injectUserUid(postRows) {
+            try {
+                if (!writerTds || writerTds.length === 0) {
+                    this.#utils.log('작성자 셀을 찾을 수 없습니다. UID 표시를 건너뜁니다.');
+                    return;
+                }
+
+                if (isMobile) {
+                    // 모바일에서는 UID 표시를 하지 않음
+                    const MobileWriterTds = document.querySelectorAll(this.#config.SELECTORS.POST_WRITER_MOBILE);
+                    return;
+                }
+
+                postRows.forEach(tr => {
+                    const writerInfo = getWriterInfo(tr);
+                    if (writerInfo.key !== 'unknown') {
+                        const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
+                        if (writerTd) {
+                            const uidSpan = document.createElement('span');
+                            uidSpan.className = this.#config.UI.USER_UID_CLASS;
+                            uidSpan.textContent = `UID: ${writerInfo.key}`;
+                            writerTd.appendChild(uidSpan);
+                        }
+                    }
+                });
+            }
+            catch (e) {
+                console.error('[Gallscope] 유저 UID 표시 중 오류 발생:', e);
             }
         }
 
