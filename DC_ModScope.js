@@ -1310,90 +1310,6 @@
             this.#log = log || (() => {});
         }
 
-        getWriterInfo(tr) {
-            // TODO: 갱차/메모 정보 추가
-            const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
-            if (!writerTd) return {
-                type: this.#config.CONSTANTS.USER_TYPES.UNKNOWN,
-                key: 'unknown',
-                name: 'Unknown'
-            };
-
-            const {
-                USER_TYPES,
-                USER_TYPE_ICON
-            } = this.#config.CONSTANTS;
-            const img = writerTd.querySelector('img');
-            const file = img?.src.split('/').pop().split('?')[0].toLowerCase();
-            let type = file ? (file === USER_TYPE_ICON.SEMI_FIXED ? USER_TYPES.SEMI : USER_TYPES.FIXED) : USER_TYPES.GUEST;
-
-            const ip = writerTd.dataset.ip?.trim();
-            const uid = writerTd.dataset.uid?.trim();
-            const nickname = (writerTd.querySelector('.nickname em') ?? writerTd.querySelector('.nickname'))?.textContent.trim();
-
-            let key = uid ? `id:${uid}` : (ip ? `ip:${ip}` : `misc:${tr.dataset.no ?? Math.random()}`);
-            let displayName = '유동';
-
-            if (type === USER_TYPES.FIXED || type === USER_TYPES.SEMI) {
-                displayName = nickname ?? '고정닉/반고닉';
-                if (uid) displayName += ` (${uid})`;
-                else if (ip && type === USER_TYPES.SEMI) displayName += ` (${ip})`;
-            } else if (type === USER_TYPES.GUEST) {
-                displayName = (nickname && nickname !== ip) ? `${nickname} (${ip ?? 'IP 없음'})` : (ip ?? nickname ?? '유동');
-            } else {
-                displayName = key;
-            }
-
-            if (type !== this.#config.CONSTANTS.USER_TYPES.GUEST()) {
-                const memo = this.getMemo(type, key);
-            }
-
-            return {
-                type,
-                key,
-                name: displayName
-            };
-        }
-
-        getUserInfo(type, uid) {
-            let isPermabanned = false;
-            let permabanGall = [];
-            if (!uid.includes('.')) {
-                //console.log('check permabanhistory '+target_id);
-                for (let cur of this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY) {
-                    for (let bannedUid of this.#config.CONSTANTS.MGALL_PERMABAN_LIST[cur]) {
-                        if (uid == bannedUid) {
-                            permabanGall.push(cur);
-                            isPermabanned = true;
-                        }
-                    }
-                }
-            }
-            //[메모나갱차있는지여부, 타겟id, 갱차갤목록, 메모내용]
-            let hasMemoOrPban = false;
-            if (DCMOD_MEMO[target_id] != undefined || isHavePermabanHistory) hasMemoOrPban = true;
-            return [hasMemoOrPban, target_id, permabanGall, DCMOD_MEMO[target_id]];
-        }
-
-        getIPInfo(key) {}
-
-        getPostData(tr) {
-            const titleEl = tr.querySelector(this.#config.SELECTORS.POST_TITLE);
-            if (!titleEl) return null;
-
-            const clonedTitleEl = titleEl.cloneNode(true);
-            clonedTitleEl.querySelector(this.#config.SELECTORS.POST_REPLY_NUM)?.remove();
-            clonedTitleEl.querySelector(this.#config.SELECTORS.POST_ICON_IMG)?.remove();
-
-            return {
-                post_no: tr.dataset.no,
-                title: clonedTitleEl.textContent.trim() || '제목 없음',
-                views: tr.querySelector(this.#config.SELECTORS.POST_VIEWS)?.textContent.trim() ?? '0',
-                reco: tr.querySelector(this.#config.SELECTORS.POST_RECOMMEND)?.textContent.trim() ?? '0',
-                timestamp: tr.querySelector(this.#config.SELECTORS.POST_DATE)?.title ?? null
-            };
-        }
-
         calculate(postRows) {
             this.#log(`게시물 ${postRows.length}개에 대한 통계 계산 시작.`);
             const totalPostCount = postRows.length;
@@ -1477,6 +1393,189 @@
             };
             this.#log('계산 완료된 통계:', result);
             return result;
+        }
+
+        getWriterInfo(tr) {
+            const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
+            if (!writerTd) return {
+                type: this.#config.CONSTANTS.USER_TYPES.UNKNOWN,
+                key: 'unknown',
+                name: 'Unknown'
+            };
+
+            const {
+                USER_TYPES,
+                USER_TYPE_ICON
+            } = this.#config.CONSTANTS;
+            const img = writerTd.querySelector('img');
+            const file = img?.src.split('/').pop().split('?')[0].toLowerCase();
+            let type = file ? (file === USER_TYPE_ICON.SEMI_FIXED ? USER_TYPES.SEMI : USER_TYPES.FIXED) : USER_TYPES.GUEST;
+
+            const ip = writerTd.dataset.ip?.trim();
+            const uid = writerTd.dataset.uid?.trim();
+            const nickname = (writerTd.querySelector('.nickname em') ?? writerTd.querySelector('.nickname'))?.textContent.trim();
+
+            let key = uid ? `id:${uid}` : (ip ? `ip:${ip}` : `misc:${tr.dataset.no ?? Math.random()}`);
+            let displayName = '유동';
+
+            if (type === USER_TYPES.FIXED || type === USER_TYPES.SEMI) {
+                displayName = nickname ?? '고정닉/반고닉';
+                if (uid) displayName += ` (${uid})`;
+                else if (ip && type === USER_TYPES.SEMI) displayName += ` (${ip})`;
+            } else if (type === USER_TYPES.GUEST) {
+                displayName = (nickname && nickname !== ip) ? `${nickname} (${ip ?? 'IP 없음'})` : (ip ?? nickname ?? '유동');
+            } else {
+                displayName = key;
+            }
+
+            if (type !== this.#config.CONSTANTS.USER_TYPES.GUEST) {
+                const {permabannedGall, userMemo} = this.#getUserInfo(uid);
+
+                return {
+                    type,
+                    key,
+                    name: displayName,
+                    permabannedGall,
+                    userMemo,
+                }
+            }
+            else {
+                const {ipType, ipOwners} = this.#getIPInfo(ip);
+
+                return {
+                    type,
+                    key,
+                    name: displayName,
+                    ipType,
+                    ipOwners,
+                }
+            }
+        }
+
+        #getUserInfo(uid) {
+            const permabannedGall = this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY.filter(gallName =>
+                this.#config.CONSTANTS.MGALL_PERMABAN_LIST[gallName]?.includes(uid)
+            );
+            
+            const userMemo = this.#config.CONSTANTS.DC_MEMO[uid] ?? null;
+            
+            return {
+                permabannedGall: permabannedGall.length > 0 ? permabannedGall : null,
+                userMemo,
+            }
+        }
+
+        #getIPInfo(ip) {
+            if (this.#isKrIP(ip)) {//국내 아이피
+                let ipOwners = [];
+                
+                for (let owner of this.#config.CONSTANTS.IP_OWNER_LIST_KEY) {
+                    if (this.#config.CONSTANTS.IP_OWNER_LIST[owner].includes(ip)) {
+                        ipOwners.push(owner);
+                    }
+                }
+
+                if (this.#checkIpRange(ip)) {//통피
+                    return {
+                        ipType: 'MOB',
+                        ipOwners,
+                    };
+                } 
+                else if (ipOwners.size != 0) {
+                    return {
+                        ipType: 'ISP',
+                        ipOwners,
+                    };
+                }
+                return {
+                    ipType: 'FISP',
+                    ipOwners: ['KR-unknown']
+                };
+            }
+            else {//해외
+                let VPNOwners = [];
+
+                for (let owner of this.#config.CONSTANTS.VPN_LIST_KEY) {
+                    if (this.#config.CONSTANTS.VPN_LIST[owner].includes(ip)) {
+                        VPNOwners.push(owner);
+                    }
+                }
+
+                if (VPNOwners.length > 0) {
+                    return {
+                        ipType: 'VPN',
+                        ipOwners: VPNOwners,
+                    };
+                }
+
+                return {
+                    ipType: 'FISP',
+                    ipOwners: ['해외'],
+                };
+            }
+        }
+
+        #isKrIP(ip) {//한국 아이피 검사
+            let ipinfo = ip.split('.');
+            if (!this.#config.CONSTANTS.IP_LIST.hasOwnProperty(String(ipinfo[0]))) {
+                return false;
+            } else {
+                for (let cur of this.#config.CONSTANTS.IP_LIST[String(ipinfo[0])]) {
+                    if (cur[0][0] <= ipinfo[1] && ipinfo[1] <= cur[1][0]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        #checkIpRange(ip) {//통피여부 체크
+            const ipRanges = [
+                //SK
+                "211.235", "115.161","122.202","122.32","211.234","121.190","203.226","175.202","223.57", "203.236","121.163","123.288", ...Array.from({ length: 32 }, (_, i) => `223.${32 + i}`),
+                //KT
+                "175.223","175.252","210.125","211.246","110.70","39.7","118.235", "119.194","175.253",
+                //LG
+                "114.200","117.111","211.36","106.102","61.43","125.188","211.234","106.101", "61.33","211.60","211.226","115.95","182.224","14.41",
+                //해외로밍
+                "42.35","42.36"
+            ];
+
+            const ipParts = ip.split('.');
+            for (const range of ipRanges) {
+                if (Array.isArray(range)) {
+                    const [start, end] = range.map(r => r.split('.').map(Number));
+                    const [inputStart, inputEnd] = [ipParts[0], ipParts[1]].map(Number);
+
+                    if (inputStart >= start[0] && inputStart <= end[0]) {
+                        if (inputEnd >= start[1] && inputEnd <= end[1]) {
+                            return true;
+                        }
+                    }
+                } else {
+                    if (range === ipParts.slice(0, 2).join('.')) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        getPostData(tr) {
+            const titleEl = tr.querySelector(this.#config.SELECTORS.POST_TITLE);
+            if (!titleEl) return null;
+
+            const clonedTitleEl = titleEl.cloneNode(true);
+            clonedTitleEl.querySelector(this.#config.SELECTORS.POST_REPLY_NUM)?.remove();
+            clonedTitleEl.querySelector(this.#config.SELECTORS.POST_ICON_IMG)?.remove();
+
+            return {
+                post_no: tr.dataset.no,
+                title: clonedTitleEl.textContent.trim() || '제목 없음',
+                views: tr.querySelector(this.#config.SELECTORS.POST_VIEWS)?.textContent.trim() ?? '0',
+                reco: tr.querySelector(this.#config.SELECTORS.POST_RECOMMEND)?.textContent.trim() ?? '0',
+                timestamp: tr.querySelector(this.#config.SELECTORS.POST_DATE)?.title ?? null
+            };
         }
 
         getFixedNickRatioStage(ratio) {
@@ -1983,6 +2082,8 @@
 
             this.#preloadResources();
 
+            await this.#udpateDcMemo();
+
             await this.#loadGithubData();
 
             if (!galleryParser.doc.querySelector(this.#config.SELECTORS.POST_ROW)) {
@@ -2015,12 +2116,20 @@
             this.#utils.log('Core', '갤스코프 초기화 완료.');
         }
 
+        async #udpateDcMemo() {
+            this.#config.CONSTANTS.DC_MEMO = await GM.getValue('memo');
+            if (this.#config.CONSTANTS.DC_MEMO == undefined) {
+                this.#config.CONSTANTS.DC_MEMO = {};
+                await GM.setValue('dc_memo', this.#config.CONSTANTS.DC_MEMO);
+            }
+        }
+
         async #loadGithubData() {
-            const cacheTime = await GM_getValue('IP_LIST_CACHE_TIME', 0);
+            const cacheTime = await GM_getValue('GITHUB_DATA_CACHE_TIME', 0);
             const now = Date.now();
             const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24시간
 
-            if (now - cacheTime > CACHE_DURATION) {
+            if (now - cacheTime > CACHE_DURATION || !cacheTime || !await GM_getValue('IP_LIST', null) || !await GM_getValue('IP_OWNER_LIST', null) || !await GM_getValue('VPN_LIST', null) || !await GM_getValue('MGALL_PERMABAN_LIST', null)) {
                 try {
                     this.#utils.log('Core', 'IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 업데이트 시작...');
                     this.#utils.log('Core', 'GitHub에서 최신 데이터를 가져옵니다...');
@@ -2065,27 +2174,34 @@
                     this.#utils.log('Core', '캐시에 데이터 저장 완료.');
                     
                     this.#config.CONSTANTS.IP_LIST = IP_LIST;
-                    this.#config.CONSTANTS.IP_LIST_KEY = Object.keys(IP_OWNER_LIST);
+
                     this.#config.CONSTANTS.IP_OWNER_LIST = IP_OWNER_LIST;
+                    this.#config.CONSTANTS.IP_OWNER_LIST_KEY = Object.keys(IP_OWNER_LIST);
+
                     this.#config.CONSTANTS.VPN_LIST = VPN_LIST;
                     this.#config.CONSTANTS.VPN_LIST_KEY = Object.keys(VPN_LIST);
+
                     this.#config.CONSTANTS.MGALL_PERMABAN_LIST = MGALL_PERMABAN_LIST;
                     this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY = Object.keys(MGALL_PERMABAN_LIST);
 
                     this.#utils.log('Core', 'IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 업데이트 완료.');
                 } catch (err) {
-                    console.error('Failed to fetch IP list:', err);
+                    console.error('[Gallscope] IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 업데이트 중 오류 발생:', err);
                 }
             }
             else {
                 this.#utils.log('Core', 'IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보가 캐시에 있습니다. 캐시된 데이터를 사용합니다.');
 
                 this.#config.CONSTANTS.IP_LIST = await GM_getValue('IP_LIST', []);
-                this.#config.CONSTANTS.IP_LIST_KEY = Object.keys(await GM_getValue('IP_OWNER_LIST', {}));
+
                 this.#config.CONSTANTS.IP_OWNER_LIST = await GM_getValue('IP_OWNER_LIST', {});
+                this.#config.CONSTANTS.IP_OWNER_LIST_KEY = Object.keys(await GM_getValue('IP_OWNER_LIST', {}));
+
                 this.#config.CONSTANTS.VPN_LIST = await GM_getValue('VPN_LIST', {});
                 this.#config.CONSTANTS.VPN_LIST_KEY = Object.keys(this.#config.CONSTANTS.VPN_LIST);
+
                 this.#config.CONSTANTS.MGALL_PERMABAN_LIST = await GM_getValue('MGALL_PERMABAN_LIST', {});
+                this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY = Object.keys(this.#config.CONSTANTS.MGALL_PERMABAN_LIST);
                 
                 this.#utils.log('Core', '캐시된 IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 로드 완료.');
             }
@@ -2500,7 +2616,6 @@
         }
 
         async runAnalysis() {
-            this.#uiManager.injectUserUid();
             this.#uiManager.injectUserSearchUI(this._handleUserSearchRequest.bind(this));
             this.#utils.log('Analysis', '분석 실행.');
             const postRows = this.#uiManager.getPostRows();
@@ -2624,28 +2739,20 @@
 
         async #injectUserUid(postRows) {
             try {
-                if (!writerTds || writerTds.length === 0) {
+                if (!postRows || postRows.length === 0) {
                     this.#utils.log('작성자 셀을 찾을 수 없습니다. UID 표시를 건너뜁니다.');
                     return;
                 }
 
                 if (isMobile) {
                     // 모바일에서는 UID 표시를 하지 않음
-                    const MobileWriterTds = document.querySelectorAll(this.#config.SELECTORS.POST_WRITER_MOBILE);
+                    const MobilePostRowss = document.querySelectorAll(this.#config.SELECTORS.POST_WRITER_MOBILE);
                     return;
                 }
 
                 postRows.forEach(tr => {
-                    const writerInfo = getWriterInfo(tr);
-                    if (writerInfo.key !== 'unknown') {
-                        const writerTd = tr.querySelector(this.#config.SELECTORS.POST_WRITER);
-                        if (writerTd) {
-                            const uidSpan = document.createElement('span');
-                            uidSpan.className = this.#config.UI.USER_UID_CLASS;
-                            uidSpan.textContent = `UID: ${writerInfo.key}`;
-                            writerTd.appendChild(uidSpan);
-                        }
-                    }
+                    const writerInfo = this.#calculator.getWriterInfo(tr);
+                    console.log('[Gallscope] 작성자 정보:', writerInfo);
                 });
             }
             catch (e) {
@@ -3524,6 +3631,7 @@
             VPN_LIST_KEY: null,
             MGALL_PERMABAN_LIST: null,
             MGALL_PERMABAN_LIST_KEY: null,
+            DC_MEMO: null,
         },
 
         STATUS_LEVELS: [{
