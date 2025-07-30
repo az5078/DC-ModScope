@@ -782,13 +782,13 @@
 
         async injectStyles() {
             if (document.getElementById('gallscope-styles')) return;
-            
+
             console.log('Loading CSS from remote source...');
             const res = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/css.js');
-            
+
             if (!res.ok) throw new Error("CSS fetch failed")
             else console.log('CSS loaded successfully');
-        
+
             const cssRaw = await res.text();
 
             const css = cssRaw
@@ -1456,9 +1456,9 @@
             const permabannedGall = this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY.filter(gallName =>
                 this.#config.CONSTANTS.MGALL_PERMABAN_LIST[gallName]?.includes(uid)
             );
-            
+
             const userMemo = this.#config.CONSTANTS.DC_MEMO[uid] ?? null;
-            
+
             return {
                 permabannedGall: permabannedGall.length > 0 ? permabannedGall : null,
                 userMemo,
@@ -1468,7 +1468,7 @@
         #getIPInfo(ip) {
             if (this.#isKrIP(ip)) {//국내 아이피
                 let ipOwners = [];
-                
+
                 for (let owner of this.#config.CONSTANTS.IP_OWNER_LIST_KEY) {
                     if (this.#config.CONSTANTS.IP_OWNER_LIST[owner].includes(ip)) {
                         ipOwners.push(owner);
@@ -1480,7 +1480,7 @@
                         ipType: 'MOB',
                         ipOwners,
                     };
-                } 
+                }
                 else if (ipOwners.size != 0) {
                     return {
                         ipType: 'ISP',
@@ -2172,7 +2172,7 @@
                     await GM_setValue('IP_LIST_CACHE_TIME', now);
 
                     this.#utils.log('Core', '캐시에 데이터 저장 완료.');
-                    
+
                     this.#config.CONSTANTS.IP_LIST = IP_LIST;
 
                     this.#config.CONSTANTS.IP_OWNER_LIST = IP_OWNER_LIST;
@@ -2202,7 +2202,7 @@
 
                 this.#config.CONSTANTS.MGALL_PERMABAN_LIST = await GM_getValue('MGALL_PERMABAN_LIST', {});
                 this.#config.CONSTANTS.MGALL_PERMABAN_LIST_KEY = Object.keys(this.#config.CONSTANTS.MGALL_PERMABAN_LIST);
-                
+
                 this.#utils.log('Core', '캐시된 IP 목록, IP 소유자 목록, VPN 목록, MGALL 영구 밴 정보 로드 완료.');
             }
         }
@@ -2655,7 +2655,7 @@
                 this.#uiManager.repositionBox();
             }
         }
-        
+
         async #highlightNewUsers(postRows) {
             try {
                 const galleryId = galleryParser.galleryId;
@@ -3515,7 +3515,7 @@
         AI_SUMMARY_FEATURE_ENABLED: true,
         ICON_URL: 'https://pbs.twimg.com/media/GmykGIJbAAA98q1.png:orig',
         CHARTJS_CDN_URL: 'https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js',
-        
+
         DRAG_EVENTS: {
             START: 'mousedown',
             MOVE: 'mousemove',
