@@ -362,7 +362,7 @@ class ModalManager {
             const date = d.timestamp;
             return date.toDateString() === today.toDateString() ?
                 `${pad(date.getHours())}:${pad(date.getMinutes())}` :
-            `${pad(date.getMonth() + 1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+                `${pad(date.getMonth() + 1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
         });
 
         const now = new Date();
@@ -585,7 +585,7 @@ class ModalManager {
                 const displayName = targetUserInfo.displayName || idPart;
                 headerTitle = (displayName && idPart && displayName.toLowerCase() !== idPart.toLowerCase()) ?
                     `${displayName}(${idPart}) 분석 결과` :
-                `${displayName} 분석 결과`;
+                    `${displayName} 분석 결과`;
             }
         }
 
@@ -596,7 +596,7 @@ class ModalManager {
             contentDiv.innerHTML = `<p style="text-align: left;">AI가 유저를 분석하고 있습니다...<br>잠시만 기다려주세요.</p>`;
         } else {
             const analysisListItems = content.split('\n').filter(line => line.trim() !== '')
-            .map(line => `<li>${this.#eventHandlers.escapeHtml(line.replace(/^\d+\.\s*/, ''))}</li>`).join('');
+                .map(line => `<li>${this.#eventHandlers.escapeHtml(line.replace(/^\d+\.\s*/, ''))}</li>`).join('');
 
             const resultContainer = `<ol class="ai-analysis-list">${analysisListItems}</ol><small class="modal-credits-inline">※ AI의 팩폭입니다. 과몰입 금지. 긁?</small>`;
             const footerHTML = `
@@ -621,9 +621,9 @@ class ModalManager {
                     const credits = `${this.#eventHandlers.getFormattedTimestamp()} Powered by 갤스코프`;
 
                     const formattedContent = content.split('\n')
-                    .filter(line => line.trim() !== '')
-                    .map(line => `• ${line.replace(/^\d+\.\s*/, '')}`)
-                    .join('\n');
+                        .filter(line => line.trim() !== '')
+                        .map(line => `• ${line.replace(/^\d+\.\s*/, '')}`)
+                        .join('\n');
 
                     const textToCopy = [
                         `${targetUserDisplay} 분석결과`,
@@ -742,7 +742,7 @@ class UIManager {
         this.#state = state;
         this.#state.lastRenderedStats = {};
         this.#eventHandlers = eventHandlers;
-        this.#log = log || (() => {});
+        this.#log = log || (() => { });
         this.#tooltipManager = tooltipManager;
     }
 
@@ -973,8 +973,9 @@ class UIManager {
 
         this.#setupTooltips(stats);
 
-        this.#state.lastRenderedStats = { ...stats
-                                        };
+        this.#state.lastRenderedStats = {
+            ...stats
+        };
 
         if (this.#state.isBoxExpanded) {
             const detailsDiv = this.#state.boxElements.details;
@@ -1026,10 +1027,10 @@ class UIManager {
         }
 
         const gpiDetailRelevantValuesChanged =
-                stats.gpi !== lastStats.gpi ||
-                stats.multiPostUserCount !== lastStats.multiPostUserCount ||
-                stats.totalPostCount !== lastStats.totalPostCount ||
-                stats.scopeLabel !== lastStats.scopeLabel;
+            stats.gpi !== lastStats.gpi ||
+            stats.multiPostUserCount !== lastStats.multiPostUserCount ||
+            stats.totalPostCount !== lastStats.totalPostCount ||
+            stats.scopeLabel !== lastStats.scopeLabel;
 
         if (gpiDetailRelevantValuesChanged) {
             this.#log('UI Update: GPI Detail');
@@ -1073,12 +1074,12 @@ class UIManager {
         this.#log('UI Update: AI Section');
 
         const aiStatus = stats.aiSentimentStage === -1 ?
-                {
-                    tag: '미측정',
-                    icon: '⚪',
-                    textColor: this.isDarkMode() ? '#999' : '#666'
-                } :
-        this.#config.STATUS_LEVELS[stats.aiSentimentStage];
+            {
+                tag: '미측정',
+                icon: '⚪',
+                textColor: this.isDarkMode() ? '#999' : '#666'
+            } :
+            this.#config.STATUS_LEVELS[stats.aiSentimentStage];
 
         this.#state.boxElements.aiSentimentTextHeader.innerHTML = `<span><span id="gallscope-ai-info-trigger" class="tooltip-trigger">AI 측정 농도 -</span> </span><span class="status-tag" style="color:${aiStatus.textColor};">${aiStatus.tag}</span>`;
         const aiDetailEl = this.#state.boxElements.aiSentimentDetail;
@@ -1304,7 +1305,7 @@ class StatisticsCalculator {
     constructor(config, utils, log) {
         this.#config = config;
         this.#utils = utils;
-        this.#log = log || (() => {});
+        this.#log = log || (() => { });
     }
 
     calculate(postRows) {
@@ -1426,7 +1427,7 @@ class StatisticsCalculator {
         }
 
         if (type !== this.#config.CONSTANTS.USER_TYPES.GUEST) {
-            const {permabannedGall, userMemo} = this.#getUserInfo(uid);
+            const { permabannedGall, userMemo } = this.#getUserInfo(uid);
 
             return {
                 type,
@@ -1437,7 +1438,7 @@ class StatisticsCalculator {
             }
         }
         else {
-            const {ipType, ipOwners} = this.#getIPInfo(ip);
+            const { ipType, ipOwners } = this.#getIPInfo(ip);
 
             return {
                 type,
@@ -1529,13 +1530,13 @@ class StatisticsCalculator {
     #checkIpRange(ip) {//통피여부 체크
         const ipRanges = [
             //SK
-            "211.235", "115.161","122.202","122.32","211.234","121.190","203.226","175.202","223.57", "203.236","121.163","123.288", ...Array.from({ length: 32 }, (_, i) => `223.${32 + i}`),
+            "211.235", "115.161", "122.202", "122.32", "211.234", "121.190", "203.226", "175.202", "223.57", "203.236", "121.163", "123.288", ...Array.from({ length: 32 }, (_, i) => `223.${32 + i}`),
             //KT
-            "175.223","175.252","210.125","211.246","110.70","39.7","118.235", "119.194","175.253",
+            "175.223", "175.252", "210.125", "211.246", "110.70", "39.7", "118.235", "119.194", "175.253",
             //LG
-            "114.200","117.111","211.36","106.102","61.43","125.188","211.234","106.101", "61.33","211.60","211.226","115.95","182.224","14.41",
+            "114.200", "117.111", "211.36", "106.102", "61.43", "125.188", "211.234", "106.101", "61.33", "211.60", "211.226", "115.95", "182.224", "14.41",
             //해외로밍
-            "42.35","42.36"
+            "42.35", "42.36"
         ];
 
         const ipParts = ip.split('.');
@@ -1604,10 +1605,10 @@ class StatisticsCalculator {
         if (gpiValue <= points[0].gpi) return points[0].normalized;
         for (let i = 0; i < points.length - 1; i++) {
             const p1 = points[i],
-                    p2 = points[i + 1];
+                p2 = points[i + 1];
             if (gpiValue <= p2.gpi) {
                 const gpiRange = p2.gpi - p1.gpi,
-                        normalizedRange = p2.normalized - p1.normalized;
+                    normalizedRange = p2.normalized - p1.normalized;
                 return gpiRange === 0 ? p1.normalized : p1.normalized + ((gpiValue - p1.gpi) / gpiRange) * normalizedRange;
             }
         }
@@ -1624,7 +1625,7 @@ class StatisticsCalculator {
 
         if (timestamps.length < 5) {
             const first = timestamps[0],
-                    last = timestamps[timestamps.length - 1];
+                last = timestamps[timestamps.length - 1];
             let spanSec = (last - first) / 1000;
             if (spanSec < 1) spanSec = 1;
             return {
@@ -1642,17 +1643,17 @@ class StatisticsCalculator {
             const idx = (p / 100) * (arr.length - 1);
             if (Number.isInteger(idx)) return arr[idx];
             const l = Math.floor(idx),
-                    u = Math.ceil(idx),
-                    w = idx - l;
+                u = Math.ceil(idx),
+                w = idx - l;
             return arr[l] * (1 - w) + arr[u] * w;
         };
 
         const q1 = getPercentile(timesInMs, 25),
-                q3 = getPercentile(timesInMs, 75);
+            q3 = getPercentile(timesInMs, 75);
         const iqr = q3 - q1,
-                iqrMult = 1.0;
+            iqrMult = 1.0;
         const lowerB = q1 - iqrMult * iqr,
-                upperB = q3 + iqrMult * iqr;
+            upperB = q3 + iqrMult * iqr;
 
         const filteredTimestamps = timestamps.filter(t => t.getTime() >= lowerB && t.getTime() <= upperB);
         if (filteredTimestamps.length < 2) return {
@@ -1662,7 +1663,7 @@ class StatisticsCalculator {
         };
 
         const first = filteredTimestamps[0],
-                last = filteredTimestamps[filteredTimestamps.length - 1];
+            last = filteredTimestamps[filteredTimestamps.length - 1];
         let spanSec = (last - first) / 1000;
         if (spanSec < 1) spanSec = 1;
         const ppm = (filteredTimestamps.length / spanSec) * 60;
@@ -1752,7 +1753,7 @@ class ApiClient {
 
     constructor(config, log) {
         this.#config = config;
-        this.#log = log || (() => {});
+        this.#log = log || (() => { });
     }
 
     fetchGeminiAPI(prompt, model, apiKey, options = {}) {
@@ -1764,10 +1765,10 @@ class ApiClient {
                 }]
             }],
             safetySettings: ["HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH", "HARM_CATEGORY_SEXUALLY_EXPLICIT", "HARM_CATEGORY_DANGEROUS_CONTENT"]
-            .map(category => ({
-                category,
-                threshold: "BLOCK_NONE"
-            }))
+                .map(category => ({
+                    category,
+                    threshold: "BLOCK_NONE"
+                }))
         };
         const generationConfig = {};
         if (options.mimeType) generationConfig.response_mime_type = options.mimeType;
@@ -1775,13 +1776,14 @@ class ApiClient {
         if (Object.keys(generationConfig).length > 0) payload.generationConfig = generationConfig;
 
         this.#log(`Gemini API 요청 전송... 모델: ${model}, MimeType: ${options.mimeType || 'default'}`);
-        this.#log('API 요청 페이로드(prompt 제외):', { ...payload,
-                                                contents: [{
-                                                    parts: [{
-                                                        text: '...prompt 생략...'
-                                                    }]
-                                                }]
-                                                });
+        this.#log('API 요청 페이로드(prompt 제외):', {
+            ...payload,
+            contents: [{
+                parts: [{
+                    text: '...prompt 생략...'
+                }]
+            }]
+        });
 
         return new Promise((resolve, reject) => {
             GM_xmlhttpRequest({
@@ -2132,32 +2134,32 @@ class Gallscope {
                 this.#utils.log('Core', 'GitHub에서 최신 데이터를 가져옵니다...');
 
                 const IP_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/ip_list.json')
-                .then(res => res.json())
-                .catch(err => {
-                    console.error('[Gallscope] Failed to fetch IP list:', err);
-                    return [];
-                });
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch IP list:', err);
+                        return [];
+                    });
 
                 const IP_OWNER_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/ip_owner_list.json')
-                .then(res => res.json())
-                .catch(err => {
-                    console.error('[Gallscope] Failed to fetch IP owner list:', err);
-                    return [];
-                });
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch IP owner list:', err);
+                        return [];
+                    });
 
                 const VPN_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/vpn_list.json')
-                .then(res => res.json())
-                .catch(err => {
-                    console.error('[Gallscope] Failed to fetch VPN list:', err);
-                    return [];
-                });
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch VPN list:', err);
+                        return [];
+                    });
 
                 const MGALL_PERMABAN_LIST = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/mgall_permaban_list.json')
-                .then(res => res.json())
-                .catch(err => {
-                    console.error('[Gallscope] Failed to fetch MGALL permaban info:', err);
-                    return [];
-                });
+                    .then(res => res.json())
+                    .catch(err => {
+                        console.error('[Gallscope] Failed to fetch MGALL permaban info:', err);
+                        return [];
+                    });
 
                 this.#utils.log('Core', 'GitHub에서 데이터 가져오기 완료.');
 
@@ -2350,8 +2352,8 @@ class Gallscope {
             try {
                 const allKeys = await GM_listValues();
                 const userCacheKeys = allKeys.filter(key =>
-                                                        key.startsWith(this.#config.CONSTANTS.KNOWN_USERS_CACHE_PREFIX)
-                                                    );
+                    key.startsWith(this.#config.CONSTANTS.KNOWN_USERS_CACHE_PREFIX)
+                );
 
                 if (userCacheKeys.length === 0) {
                     alert("갤스코프에 저장된 유저 식별코드 캐시가 없습니다.");
@@ -2367,8 +2369,8 @@ class Gallscope {
                     const userKeyList = userCacheArray.map(userArray => userArray[0]);
 
                     console.log(`%c■ ${galleryId} 갤러리 (${userKeyList.length}개 저장됨)`,
-                                "font-weight: bold;",
-                                );
+                        "font-weight: bold;",
+                    );
                     console.log(userKeyList);
                 }
 
@@ -2434,7 +2436,7 @@ class Gallscope {
                     mutation.addedNodes.forEach(node => {
                         if (node.nodeType === Node.ELEMENT_NODE) {
                             const popupUl = node.matches?.(this.#config.SELECTORS.USER_POPUP_UL) ?
-                                    node : node.querySelector?.(this.#config.SELECTORS.USER_POPUP_UL);
+                                node : node.querySelector?.(this.#config.SELECTORS.USER_POPUP_UL);
                             if (popupUl) this.#addScopeMenuItemToPopup(popupUl);
                         }
                     });
@@ -2561,7 +2563,7 @@ class Gallscope {
         if ((now - lastPruningTime) < PRUNING_INTERVAL_HOURS * 60 * 60) {
             const cacheKey = `${this.#config.CONSTANTS.KNOWN_USERS_CACHE_PREFIX}${galleryId}`;
             let userList = [...this.#state.sessionCache.userMap.entries()].map(([key, data]) =>
-                                                                                [key, data.firstSeen, data.lastSeen, data.postCount]);
+                [key, data.firstSeen, data.lastSeen, data.postCount]);
             await GM_setValue(cacheKey, userList);
             this.#state.sessionCache.isDirty = false;
             this.#utils.log('CacheSave', `[스로틀링] 정리 없이 캐시 저장만 수행 (${userList.length}개)`);
@@ -2571,7 +2573,7 @@ class Gallscope {
         this.#utils.log('CachePruning', `캐시 정리 작업 시작... (마지막 정리 후 ${PRUNING_INTERVAL_HOURS}시간 이상 경과)`);
 
         let updatedUserList = [...this.#state.sessionCache.userMap.entries()].map(([key, data]) =>
-                                                                                    [key, data.firstSeen, data.lastSeen, data.postCount]);
+            [key, data.firstSeen, data.lastSeen, data.postCount]);
 
         const expirationDays = await GM_getValue(
             this.#config.CONSTANTS.CACHE_EXPIRATION_DAYS_KEY,
@@ -2624,7 +2626,7 @@ class Gallscope {
             return;
         }
 
-        if(box) box.style.display = 'block';
+        if (box) box.style.display = 'block';
 
         this.#uiManager.applyInitialExpandState();
 
@@ -2769,8 +2771,8 @@ class Gallscope {
                         .addEventListener('click', () => this.#handleApiKeySave(modal));
                     modal.querySelector('#gallscopeApiKeyInput')
                         .addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') this.#handleApiKeySave(modal);
-                    });
+                            if (e.key === 'Enter') this.#handleApiKeySave(modal);
+                        });
                 }
             });
         }
@@ -2820,8 +2822,8 @@ class Gallscope {
                         .addEventListener('click', () => this.#handleApiKeySave(modal));
                     modal.querySelector('#gallscopeApiKeyInput')
                         .addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') this.#handleApiKeySave(modal);
-                    });
+                            if (e.key === 'Enter') this.#handleApiKeySave(modal);
+                        });
                 }
             });
         }
@@ -2830,12 +2832,12 @@ class Gallscope {
         this.#uiManager.renderAnalysisBox(this.#state.lastCalculatedStats);
 
         const postsForSentiment = this.#uiManager.getPostRows()
-        .map(tr => this.#calculator.getPostData(tr)).filter(Boolean)
-        .map(p => ({
-            title: p.title,
-            views: parseInt(p.views, 10),
-            reco: parseInt(p.reco, 10)
-        }));
+            .map(tr => this.#calculator.getPostData(tr)).filter(Boolean)
+            .map(p => ({
+                title: p.title,
+                views: parseInt(p.views, 10),
+                reco: parseInt(p.reco, 10)
+            }));
 
         if (postsForSentiment.length === 0) {
             this.#state.isAIFetching = false;
@@ -3144,8 +3146,8 @@ class Gallscope {
 
         const idPart = targetUserInfo.filterKey.split(':').pop();
         const titleDisplay = (targetUserInfo.displayName.toLowerCase() !== idPart.toLowerCase()) ?
-                `${targetUserInfo.displayName}(${idPart})` :
-        targetUserInfo.displayName;
+            `${targetUserInfo.displayName}(${idPart})` :
+            targetUserInfo.displayName;
 
         const finalTargetUserInfo = {
             ...targetUserInfo,
@@ -3158,8 +3160,8 @@ class Gallscope {
         const allPosts = [];
         const failedPages = [];
         const analysisTimeout = new Promise((_, reject) =>
-                                            setTimeout(() => reject(new Error('USER_POST_ANALYSIS_TIMEOUT')), this.#config.CONSTANTS.MULTI_PAGE_ANALYSIS_TIMEOUT_MS)
-                                            );
+            setTimeout(() => reject(new Error('USER_POST_ANALYSIS_TIMEOUT')), this.#config.CONSTANTS.MULTI_PAGE_ANALYSIS_TIMEOUT_MS)
+        );
 
         try {
             const analysisPromise = this.#_runUserPostFetchWorkflow(finalTargetUserInfo, startPage, endPage, allPosts, failedPages);
@@ -3202,13 +3204,13 @@ class Gallscope {
 
             const chunk = pagesToFetch.slice(i, i + this.#config.CONSTANTS.MULTI_PAGE_FETCH_CHUNK_SIZE);
             const pagePromises = chunk.map(pageNum =>
-                                            this.#_fetchAndParsePage(baseUrl, galleryId, pageNum, false)
-                                            .catch(err => ({
-                page: pageNum,
-                status: 'failed',
-                error: err
-            }))
-                                            );
+                this.#_fetchAndParsePage(baseUrl, galleryId, pageNum, false)
+                    .catch(err => ({
+                        page: pageNum,
+                        status: 'failed',
+                        error: err
+                    }))
+            );
 
             const chunkResults = await Promise.all(pagePromises);
 
@@ -3216,8 +3218,8 @@ class Gallscope {
                 processedPageCount++;
                 if (result.status === 'success') {
                     const foundOnPage = result.postRows
-                    .filter(tr => this.#calculator.getWriterInfo(tr)?.key === targetUserInfo.filterKey)
-                    .map(tr => this.#calculator.getPostData(tr)).filter(Boolean);
+                        .filter(tr => this.#calculator.getWriterInfo(tr)?.key === targetUserInfo.filterKey)
+                        .map(tr => this.#calculator.getPostData(tr)).filter(Boolean);
                     allPosts.push(...foundOnPage);
                 } else if (result.status !== 'success_empty') {
                     failedPages.push({
@@ -3331,8 +3333,8 @@ class Gallscope {
                     aiNegativeRatio
                 } = stats;
                 const fixedStatus = STATUS_LEVELS[fixedNickRatioStage],
-                        gpiStatus = STATUS_LEVELS[gpiStage],
-                        healthStatus = STATUS_LEVELS[healthStage];
+                    gpiStatus = STATUS_LEVELS[gpiStage],
+                    healthStatus = STATUS_LEVELS[healthStage];
                 const aiStatusLine = (aiSentimentStage !== -1) ? `<p>AI 측정 농도: <strong>${STATUS_LEVELS[aiSentimentStage].tag}</strong> (단계 ${aiSentimentStage}, 부정 ${self.#utils.formatPercent(aiNegativeRatio)})</p>` : `<p>AI 측정 농도: <strong style="color: #999;">미측정</strong></p>`;
                 const weights = {
                     gpi: 0.5,
@@ -3342,8 +3344,8 @@ class Gallscope {
                 let calcHTML;
                 if (aiSentimentStage === -1) {
                     const totalW = weights.gpi + weights.fixedNick,
-                            gpiW = (weights.gpi / totalW).toFixed(3),
-                            fixedW = (weights.fixedNick / totalW).toFixed(3);
+                        gpiW = (weights.gpi / totalW).toFixed(3),
+                        fixedW = (weights.fixedNick / totalW).toFixed(3);
                     const score = (gpiStage * gpiW) + (fixedNickRatioStage * fixedW);
                     calcHTML = `<p style="margin-bottom: 5px;"><strong>종합 점수 계산 (가중치 재조정)</strong></p><small>(GPI ${gpiStage} × ${gpiW}) + (고정닉 ${fixedNickRatioStage} × ${fixedW}) = <strong>${score.toFixed(2)}점</strong></small><p style="margin-top:8px;">${score.toFixed(2)}점 → 반올림 → <strong>최종 ${healthStage}단계</strong></p>`;
                 } else {
@@ -3359,7 +3361,7 @@ class Gallscope {
             },
             getGpiTooltipHTML: stats => {
                 const gpiStatus = STATUS_LEVELS[stats.gpiStage],
-                        normGpiPercent = (stats.normalizedGpi * 100).toFixed(0);
+                    normGpiPercent = (stats.normalizedGpi * 100).toFixed(0);
                 let html = `<h4>갤 망령 지수 (GPI; Gallery Phantom Index) ⓘ</h4>`;
                 if (stats.isGpiAveraged) html += `<p>여러 페이지 분석 시, GPI는 각 페이지별 소수 유저의 게시글 집중도를 개별 계산한 후 평균낸 값입니다. 이를 통해 해당 구간의 <strong>평균적인 망령 농도</strong>를 보여줍니다.</p><hr><p><strong>상대적 집중도: 약 ${normGpiPercent}% 스케일</strong> <span style="white-space: nowrap;">(상태: ${gpiStatus.tag})</span></p><p><small style="display:block; margin-top:5px;">평균 GPI: ${stats.gpi.toFixed(4)}<br>계산식: (Σ 페이지별 GPI) / (총 페이지 수)</small></p>`;
                 else {
@@ -3374,11 +3376,11 @@ class Gallscope {
                 const isLight = !self.#uiManager.isDarkMode();
                 let html = `<h4>상세 작성자 정보 (상위 ${stats.topPosters.length}명)</h4>`;
                 stats.topPosters.forEach(p => {
-                    const dName = p.name.length > 35 ? `${p.name.substring(0,32)}...` : p.name;
+                    const dName = p.name.length > 35 ? `${p.name.substring(0, 32)}...` : p.name;
                     let color = p.type === self.#config.CONSTANTS.USER_TYPES.FIXED ? (isLight ? '#CD853F' : '#FFD700') : (p.type === self.#config.CONSTANTS.USER_TYPES.SEMI ? (isLight ? '#2E8B57' : '#90EE90') : (isLight ? '#4682B4' : '#ADD8E6'));
                     html += `<p><strong style="color: ${color};">${self.#utils.escapeHtml(dName)}</strong> - ${p.count}개</p>`;
                 });
-                html += `<hr>${stats.otherMultiPostUserCount > 0 ? `<small>그 외 ${stats.otherMultiPostUserCount}명이 ${stats.otherMultiPostCount}개 작성</small>`:''}<small>(${stats.totalPostCount}개 중 ${stats.multiPostCount}개를 ${stats.multiPostUserCount}명이 작성)</small><hr><small style="display: block; text-align: right;">${self.#utils.getFormattedTimestamp()} by 갤스코프</small><small style="display: block; text-align: right;">${self.#uiManager.getGalleryName()} 갤러리</small>`;
+                html += `<hr>${stats.otherMultiPostUserCount > 0 ? `<small>그 외 ${stats.otherMultiPostUserCount}명이 ${stats.otherMultiPostCount}개 작성</small>` : ''}<small>(${stats.totalPostCount}개 중 ${stats.multiPostCount}개를 ${stats.multiPostUserCount}명이 작성)</small><hr><small style="display: block; text-align: right;">${self.#utils.getFormattedTimestamp()} by 갤스코프</small><small style="display: block; text-align: right;">${self.#uiManager.getGalleryName()} 갤러리</small>`;
                 return html;
             },
             getFixedNickDetailTooltipHTML: stats => `<h4>고정닉 농도 상세</h4><p>유동: <strong>${self.#utils.formatPercent(stats.guestPostRatio)}</strong> (${stats.guestPostCount}개)</p><p>반고닉: <strong>${self.#utils.formatPercent(stats.semiFixedPostRatio)}</strong> (${stats.semiFixedPostCount}개)</p><p>고정닉: <strong>${self.#utils.formatPercent(stats.fixedPostRatio)}</strong> (${stats.fixedPostCount}개)</p><hr><small>총 ${stats.totalPostCount}개 게시물 기준</small><hr><small style="display: block; text-align: right;">by 갤스코프</small><small style="display: block; text-align: right;">${self.#utils.getFormattedTimestamp()}</small><small style="display: block; text-align: right;">${self.#uiManager.getGalleryName()} 갤러리</small>`,
@@ -3391,13 +3393,13 @@ class Gallscope {
                     timeSpanInSeconds: span
                 } = stats.speed;
                 const pad = n => String(n).padStart(2, '0'),
-                        fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`,
-                        fmtDate = d => `${pad(d.getMonth()+1)}/${pad(d.getDate())}`;
+                    fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`,
+                    fmtDate = d => `${pad(d.getMonth() + 1)}/${pad(d.getDate())}`;
                 const sameDate = first.toDateString() === last.toDateString();
                 const firstDisp = sameDate ? fmtTime(first) : `${fmtDate(first)} ${fmtTime(first)}`,
-                        lastDisp = sameDate ? fmtTime(last) : `${fmtDate(last)} ${fmtTime(last)}`;
+                    lastDisp = sameDate ? fmtTime(last) : `${fmtDate(last)} ${fmtTime(last)}`;
                 const totalSec = Math.max(1, Math.round(span)),
-                        spanFmt = `${Math.floor(totalSec/60)}분 ${totalSec%60}초`;
+                    spanFmt = `${Math.floor(totalSec / 60)}분 ${totalSec % 60}초`;
                 const avgInt = stats.totalPostCount > 1 ? span / (stats.totalPostCount - 1) : 0;
                 return `<h4>글 리젠 속도 상세 정보 ⓘ</h4><p><strong>분석된 시간:</strong><br>  ${firstDisp} ~ ${lastDisp} (${spanFmt})</p><p><strong>총 게시물 수:</strong> ${stats.totalPostCount}개</p><p><strong>평균 작성 간격:</strong> ${avgInt > 0 ? `${avgInt.toFixed(1)}초` : '계산 불가'}</p><hr><p><strong>계산식:</strong> ${stats.totalPostCount}개 / ${spanFmt} → 분당 ${ppm.toFixed(1)}개</p>`;
             },
@@ -3407,10 +3409,10 @@ class Gallscope {
             },
             getAiSentimentTooltipHTML: stats => {
                 if (stats.aiSentimentStage === -1) return `<h4>AI 측정 농도 상세</h4><p>'측정 시작' 버튼을 눌러 분석해주세요.</p>`;
-                const createList = (label, titles) => (!titles?.length) ? '' : `<div style="margin-top: 8px;"><p style="margin: 0 0 3px 0;"><strong>${label}:</strong></p><ul style="margin: 0; padding-left: 18px; font-size: 0.95em; list-style-type: disc;">${titles.map(t=>`<li>${self.#utils.escapeHtml(t)}</li>`).join('')}</ul></div>`;
+                const createList = (label, titles) => (!titles?.length) ? '' : `<div style="margin-top: 8px;"><p style="margin: 0 0 3px 0;"><strong>${label}:</strong></p><ul style="margin: 0; padding-left: 18px; font-size: 0.95em; list-style-type: disc;">${titles.map(t => `<li>${self.#utils.escapeHtml(t)}</li>`).join('')}</ul></div>`;
                 const pList = createList('주요 긍정적 게시물', stats.positive_titles),
-                        nList = createList('주요 부정적 게시물', stats.negative_titles);
-                return `<h4>AI 감정 분석 상세 데이터</h4><p style="margin-bottom: 8px;">긍정: <strong>${self.#utils.formatPercent(stats.aiPositiveRatio)} (${stats.aiPositiveCount}개)</strong><br>부정: <strong>${self.#utils.formatPercent(stats.aiNegativeRatio)} (${stats.aiNegativeCount}개)</strong><br>중립: <strong>${self.#utils.formatPercent(stats.aiNeutralRatio)} (${stats.aiNeutralCount}개)</strong></p>${(pList||nList)?'<hr>':''}${pList}${nList}<hr><small style="display: block; text-align: right;">${self.#utils.getFormattedTimestamp()} by 갤스코프</small><small style="display: block; text-align: right;">${self.#uiManager.getGalleryName()} 갤러리</small>`;
+                    nList = createList('주요 부정적 게시물', stats.negative_titles);
+                return `<h4>AI 감정 분석 상세 데이터</h4><p style="margin-bottom: 8px;">긍정: <strong>${self.#utils.formatPercent(stats.aiPositiveRatio)} (${stats.aiPositiveCount}개)</strong><br>부정: <strong>${self.#utils.formatPercent(stats.aiNegativeRatio)} (${stats.aiNegativeCount}개)</strong><br>중립: <strong>${self.#utils.formatPercent(stats.aiNeutralRatio)} (${stats.aiNeutralCount}개)</strong></p>${(pList || nList) ? '<hr>' : ''}${pList}${nList}<hr><small style="display: block; text-align: right;">${self.#utils.getFormattedTimestamp()} by 갤스코프</small><small style="display: block; text-align: right;">${self.#uiManager.getGalleryName()} 갤러리</small>`;
             },
         };
     }
@@ -3426,15 +3428,15 @@ class Gallscope {
             const reportText = reportGenerator.generate();
             navigator.clipboard.writeText(reportText)
                 .then(() => {
-                copyBtn.textContent = '복사 완료!';
-                setTimeout(() => {
-                    copyBtn.textContent = '갤스코프 결과 복사';
-                }, this.#config.CONSTANTS.COPY_SUCCESS_MESSAGE_DURATION);
-            })
+                    copyBtn.textContent = '복사 완료!';
+                    setTimeout(() => {
+                        copyBtn.textContent = '갤스코프 결과 복사';
+                    }, this.#config.CONSTANTS.COPY_SUCCESS_MESSAGE_DURATION);
+                })
                 .catch(err => {
-                copyBtn.textContent = '복사 실패';
-                console.error('Gallscope: Failed to copy text: ', err);
-            });
+                    copyBtn.textContent = '복사 실패';
+                    console.error('Gallscope: Failed to copy text: ', err);
+                });
         };
     }
 }
@@ -3608,7 +3610,7 @@ const config = {
         }, {
             gpi: 0.150,
             normalized: 1.00
-        }, ],
+        },],
         KNOWN_USERS_CACHE_PREFIX: 'gallscope_known_users_v2_lru',
         KNOWN_USERS_CACHE_SIZE: 10000,
         NEW_USER_HIGHLIGHT_THRESHOLD: 0.8,
@@ -3747,10 +3749,10 @@ const utils = {
         return text.replace(/[&<>"']/g, m => map[m]);
     },
 };
-    
+
 (async () => {
     // --- Script Entry Point ---
-    
+
     'use strict';
 
     const gallscope = new Gallscope(
