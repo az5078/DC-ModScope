@@ -765,7 +765,7 @@ class UIManager {
     }
 
     isDarkMode() {
-        return !!document.getElementById('css-darkmode') || document.documentElement.classList.contains('darkmode');
+        return !!(document.getElementById('css-darkmode') || document.documentElement.classList.contains('darkmode'));
     }
 
     updateTheme() {
@@ -3190,6 +3190,7 @@ class Gallscope {
             });
             return;
         }
+
         const baseUrl = galleryParser.baseUrl
         const pagesToFetch = Array.from({
             length: endPage - startPage + 1
