@@ -138,6 +138,10 @@
     border-color: #ccc;
 }
 
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
+    border-color: #ccc;
+}
+
 .gallscope-light-theme #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn {
     background-color: #007bff;
     color: #fff;
@@ -293,6 +297,10 @@
 }
 
 .gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .scope-page-input {
+    border-color: #555;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
     border-color: #555;
 }
 
@@ -677,7 +685,19 @@
     text-align: center;
 }
 
+#___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-content p {
+    font-size: .95em;
+    opacity: .9;
+    margin-top: 0;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-content p {
     font-size: .95em;
     opacity: .9;
     margin-top: 0;
@@ -690,7 +710,27 @@
     margin: 30px 0;
 }
 
+#___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+}
+
 #___SCOPE_INPUT_MODAL_ID___ .scope-page-input {
+    width: 80px;
+    padding: 8px 10px;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 1.1em;
+    background-color: transparent;
+    color: inherit;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
     width: 80px;
     padding: 8px 10px;
     text-align: center;
@@ -782,12 +822,42 @@
     background-color: #5a6268;
 }
 
+#___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
+    height: 25px;
+    border-radius: 4px;
+    padding: 0 7px;
+    font-size: 12px;
+    font-family: "Pretendard", sans-serif;
+    width: 150px;
+    transition: border-color .2s;
+}
+
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+}
+
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input:focus {
+    border-color: #007bff;
+}
+
 .gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn:hover {
     background-color: #0056b3;
 }
 
 .gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn:hover {
     background-color: #e9ecef;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
+    border: 1px solid #555;
+    background-color: #2c2d30;
+    color: #e8e8e8;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input:focus {
+    border-color: #0d6efd;
 }
 
 .gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn:hover {
@@ -797,6 +867,8 @@
 .gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn:hover {
     background-color: #5a6268;
 }
+
+
 
 #gallscopeProgressContainer {
     margin-top: 8px;
@@ -953,7 +1025,7 @@
     gap: 10px
 }
 
-#___EXPORT_BAN_LIST_MODAL_ID___.gallscope-focus-mode .scope-modal-footer {
+#___EXPORT_BAN_LIST_MODAL_ID___ .gallscope-focus-mode .scope-modal-footer {
     justify-content: space-between;
 }
 
@@ -970,9 +1042,9 @@
 }
 
 #gallscopeUserInput {
-    height: 27px;
+    height: 25px;
     border-radius: 4px;
-    padding: 0 8px;
+    padding: 0 7px;
     font-size: 12px;
     font-family: "Pretendard", sans-serif;
     width: 150px;
@@ -1038,13 +1110,6 @@
     opacity: .7;
     margin-bottom: 2px;
     padding-left: 2px;
-}
-
-#gallscopeUserInput {
-    height: 25px;
-    width: 110px;
-    padding: 0 7px;
-    font-size: 12px;
 }
 
 #gallscopeUserSearchBtn.modal-confirm-btn {
