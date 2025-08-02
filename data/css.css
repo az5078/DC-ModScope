@@ -1322,7 +1322,7 @@ tr.image_box:not(.DCMOD_DARKBG) {
     background-color: #eee !important;
 }
 
-tr.image_box.DCMOD_DARKBG) {
+tr.image_box.DCMOD_DARKBG {
     background-color: #000 !important;
 }
 

@@ -765,7 +765,11 @@ class UIManager {
     }
 
     isDarkMode() {
-        return !!(document.getElementById('css-darkmode') || document.documentElement.classList.contains('darkmode'));
+        if (!isMobile) {
+            return !!document.getElementById('css-darkmode');
+        }
+
+        return !!document.documentElement.classList.contains('darkmode');
     }
 
     updateTheme() {
@@ -781,7 +785,7 @@ class UIManager {
         if (document.getElementById('gallscope-styles')) return;
 
         console.log('Loading CSS from remote source...');
-        const res = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/css.js');
+        const res = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/css.css');
 
         if (!res.ok) throw new Error("CSS fetch failed")
         else console.log('CSS loaded successfully');
