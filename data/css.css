@@ -768,6 +768,19 @@
     margin-top: 15px;
 }
 
+#___SCOPE_INPUT_MODAL_ID___ .export-ban-list-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 15px;
+}
+
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-options {
     display: flex;
     text-align: left;
@@ -1020,12 +1033,20 @@
     justify-content: space-between;
 }
 
+#___SCOPE_INPUT_MODAL_ID___.gallscope-focus-mode .export-ban-list-modal-footer {
+    justify-content: space-between;
+}
+
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-buttons {
     display: flex;
     gap: 10px
 }
 
 #___EXPORT_BAN_LIST_MODAL_ID___ .gallscope-focus-mode .scope-modal-footer {
+    justify-content: space-between;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .gallscope-focus-mode .export-ban-list-modal-footer {
     justify-content: space-between;
 }
 
