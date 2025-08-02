@@ -649,12 +649,23 @@
     z-index: 22001;
 }
 
+#___EXPORT_BAN_LIST_MODAL_ID___ {
+    max-width: 420px;
+    z-index: 22001;
+}
+
 #___GRAPH_MODAL_ID___ {
     max-width: 950px !important;
     z-index: 19000;
 }
 
 #___SCOPE_INPUT_MODAL_ID___ .modal-content {
+    padding: 20px 25px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .modal-content {
     padding: 20px 25px;
     font-size: 14px;
     line-height: 1.6;
@@ -710,6 +721,12 @@
     align-items: center;
 }
 
+#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-options {
     display: flex;
     text-align: left;
@@ -717,6 +734,12 @@
 }
 
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -755,6 +778,22 @@
 }
 
 .gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn:hover {
+    background-color: #0056b3;
+}
+
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn:hover {
+    background-color: #e9ecef;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn:hover {
+    background-color: #0b5ed7;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn:hover {
     background-color: #5a6268;
 }
 
@@ -902,6 +941,12 @@
     align-items: center;
 }
 
+#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .gallscope-dark-theme .gallscope-scope-extension-li {
     background-color: #3b4890;
 }
@@ -916,6 +961,15 @@
 }
 
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-buttons {
+    display: flex;
+    gap: 10px
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___.gallscope-focus-mode .scope-modal-footer {
+    justify-content: space-between;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-buttons {
     display: flex;
     gap: 10px
 }
