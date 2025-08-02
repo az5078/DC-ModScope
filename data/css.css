@@ -723,8 +723,9 @@
 
 #___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    margin-top: 15px;
 }
 
 #___SCOPE_INPUT_MODAL_ID___ .scope-modal-options {
