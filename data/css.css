@@ -936,22 +936,9 @@
     color: #0088ff;
 }
 
-#___SCOPE_INPUT_MODAL_ID___ .scope-modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .gallscope-dark-theme .gallscope-scope-extension-li {
     background-color: #3b4890;
 }
-
 
 .gallscope-light-theme .gallscope-scope-extension-li {
     background-color: #3b4890;
@@ -977,8 +964,9 @@
 
 #gallscopeUserSearchContainer {
     display: inline-flex;
-    margin-top: 5px;
-    vertical-align: middle;
+    vertical-align: top !important;
+    flex-direction: column;
+    margin-left: 10px;
 }
 
 #gallscopeUserInput {
@@ -1043,10 +1031,6 @@
 
 .gallscope-dark-theme #gallscopeUserSearchBtn:hover {
     background-color: #4a4b4f;
-}
-
-#gallscopeUserSearchContainer {
-    vertical-align: top !important;
 }
 
 #gallscopeUserSearchDesc {
@@ -1162,12 +1146,6 @@
     margin-bottom: 0;
 }
 
-.modal-footer-inline {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .gallscope-copy-btn {
     padding: 5px 12px;
     font-size: 13px;
@@ -1263,7 +1241,7 @@
 
 /* --- <<<< End of CSS for Gallscope >>>> --- */
 
-/* --- <<<< CSS for DC-ModTools >>>> --- */
+/* --- <<<< Start of CSS for DC-ModTools >>>> --- */
 
 .DCMOD_DELETABLE {
     color: #a9a9a9;
