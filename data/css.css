@@ -149,6 +149,17 @@
     border: 1px solid #ddd;
 }
 
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn {
+    background-color: #f1f3f5;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
 .gallscope-dark-theme #___SCOPE_BOX_ID___ {
     color: #e8e8e8;
     background-color: #2c2d30;
@@ -291,6 +302,17 @@
 }
 
 .gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn {
+    background-color: #495057;
+    color: #f1f3f5;
+    border: 1px solid #5a6268;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn {
     background-color: #495057;
     color: #f1f3f5;
     border: 1px solid #5a6268;
@@ -702,6 +724,16 @@
 
 #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn,
 #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color .2s ease;
+}
+
+#___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn,
+#___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn {
     padding: 8px 16px;
     border: none;
     border-radius: 5px;

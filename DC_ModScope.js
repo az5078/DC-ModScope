@@ -799,6 +799,7 @@ class UIManager {
             .replaceAll('___USER_POSTS_MODAL_ID___', this.#config.UI.USER_POSTS_MODAL_ID)
             .replaceAll('___AI_USER_ANALYSIS_MODAL_ID___', this.#config.UI.AI_USER_ANALYSIS_MODAL_ID)
             .replaceAll('___SCOPE_INPUT_MODAL_ID___', this.#config.UI.SCOPE_INPUT_MODAL_ID)
+            .replaceAll('___EXPORT_BAN_LIST_MODAL_ID___', this.#config.UI.EXPORT_BAN_LIST_MODAL_ID)
             .replaceAll('___GRAPH_MODAL_ID___', this.#config.UI.GRAPH_MODAL_ID)
             .replaceAll('___AI_MODAL_ID___', this.#config.UI.AI_MODAL_ID)
             .replaceAll('___TOOLTIP_ID___', this.#config.UI.TOOLTIP_ID)
@@ -3573,6 +3574,7 @@ const config = {
         GALLSCOPE_BOX_VISIBILITY_ID: 'gallscopeBoxVisibility_v2',
         GALLSCOPE_TOGGLE_BUTTON_POSITION_ID: 'gallscopeToggleButtonPosition',
         NEW_USER_HIGHLIGHT_CLASS: 'gallscope-new-user-highlight',
+        EXPORT_BAN_LIST_MODAL_ID: 'gallscopeExportBanListModal',
     },
 
     CONSTANTS: {
