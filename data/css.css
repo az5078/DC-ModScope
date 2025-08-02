@@ -761,19 +761,6 @@
     align-items: center;
 }
 
-#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 15px;
-}
-
-#___SCOPE_INPUT_MODAL_ID___ .export-ban-list-modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 #___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-footer {
     display: flex;
     justify-content: flex-end;
@@ -793,7 +780,7 @@
     gap: 10px;
 }
 
-#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-buttons {
+#___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -1029,11 +1016,7 @@
     background-color: #3b4890;
 }
 
-#___SCOPE_INPUT_MODAL_ID___.gallscope-focus-mode .scope-modal-footer {
-    justify-content: space-between;
-}
-
-#___SCOPE_INPUT_MODAL_ID___.gallscope-focus-mode .export-ban-list-modal-footer {
+#___SCOPE_INPUT_MODAL_ID___ .gallscope-focus-mode .scope-modal-footer {
     justify-content: space-between;
 }
 
@@ -1042,15 +1025,7 @@
     gap: 10px
 }
 
-#___EXPORT_BAN_LIST_MODAL_ID___ .gallscope-focus-mode .scope-modal-footer {
-    justify-content: space-between;
-}
-
-#___EXPORT_BAN_LIST_MODAL_ID___ .gallscope-focus-mode .export-ban-list-modal-footer {
-    justify-content: space-between;
-}
-
-#___EXPORT_BAN_LIST_MODAL_ID___ .scope-modal-buttons {
+#___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-buttons {
     display: flex;
     gap: 10px
 }
