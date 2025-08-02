@@ -666,6 +666,7 @@
     font-size: 1.1em;
     background-color: transparent;
     color: inherit;
+    appearance: textfield;
     -moz-appearance: textfield;
 }
 
@@ -1325,8 +1326,6 @@ tr.image_box:not(.DCMOD_DARKBG) {
 tr.image_box.DCMOD_DARKBG {
     background-color: #000 !important;
 }
-
-tr.dci_visiblecheck {}
 
 tr.visCheck_hidden {
     display: none;
