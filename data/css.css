@@ -709,16 +709,15 @@
 }
 
 #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
-    width: 80px;
-    padding: 8px 10px;
+    height: 25px;
+    width: 80%;
     text-align: center;
     border: 1px solid;
-    border-radius: 5px;
-    font-size: 1.1em;
-    background-color: transparent;
-    color: inherit;
-    appearance: textfield;
-    -moz-appearance: textfield;
+    border-radius: 4px;
+    padding: 0 7px;
+    font-size: 12px;
+    font-family: "Pretendard", sans-serif;
+    transition: border-color .2s;
 }
 
 #___SCOPE_INPUT_MODAL_ID___ .scope-page-input::-webkit-outer-spin-button,
@@ -787,16 +786,6 @@
 
 .gallscope-dark-theme .modal-cancel-btn:hover {
     background-color: #5a6268;
-}
-
-#___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
-    height: 25px;
-    border-radius: 4px;
-    padding: 0 7px;
-    font-size: 12px;
-    font-family: "Pretendard", sans-serif;
-    width: 150px;
-    transition: border-color .2s;
 }
 
 .gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
