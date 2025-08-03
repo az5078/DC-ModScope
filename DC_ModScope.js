@@ -1210,7 +1210,6 @@ class UIManager {
         if (!isMobile) {
             const container = document.createElement('div');
             container.id = 'gallscopeUserSearchContainer';
-            container.style.cssText = 'display: inline-flex; flex-direction: column; margin-left: 10px; vertical-align: middle;';
             container.innerHTML = `
                 <div style="display: flex; align-items: center;">
                     <input type="text" id="gallscopeUserInput" placeholder="식별코드 또는 IP 검색">
