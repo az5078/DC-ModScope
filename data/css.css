@@ -142,23 +142,12 @@
     border-color: #ccc;
 }
 
-.gallscope-light-theme #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn {
+.gallscope-light-theme .modal-confirm-btn {
     background-color: #007bff;
     color: #fff;
 }
 
-.gallscope-light-theme #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn {
-    background-color: #f1f3f5;
-    color: #333;
-    border: 1px solid #ddd;
-}
-
-.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn {
+.gallscope-light-theme .modal-cancel-btn {
     background-color: #f1f3f5;
     color: #333;
     border: 1px solid #ddd;
@@ -304,23 +293,12 @@
     border-color: #555;
 }
 
-.gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn {
+.gallscope-dark-theme .modal-confirm-btn {
     background-color: #0d6efd;
     color: #fff;
 }
 
-.gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn {
-    background-color: #495057;
-    color: #f1f3f5;
-    border: 1px solid #5a6268;
-}
-
-.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn {
-    background-color: #0d6efd;
-    color: #fff;
-}
-
-.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn {
+.gallscope-dark-theme .modal-cancel-btn {
     background-color: #495057;
     color: #f1f3f5;
     border: 1px solid #5a6268;
@@ -780,14 +758,14 @@
     gap: 10px;
 }
 
-#___EXPORT_BAN_LIST_MODAL_ID___ .export-ban-list-modal-buttons {
+.modal-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
 }
 
-#___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn,
-#___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn {
+.modal-confirm-btn,
+.modal-cancel-btn {
     padding: 8px 16px;
     border: none;
     border-radius: 5px;
@@ -796,29 +774,19 @@
     transition: background-color .2s ease;
 }
 
-#___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn,
-#___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color .2s ease;
-}
-
-.gallscope-light-theme #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn:hover {
+.gallscope-light-theme .modal-confirm-btn:hover {
     background-color: #0056b3;
 }
 
-.gallscope-light-theme #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn:hover {
+.gallscope-light-theme .modal-cancel-btn:hover {
     background-color: #e9ecef;
 }
 
-.gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .modal-confirm-btn:hover {
+.gallscope-dark-theme .modal-confirm-btn:hover {
     background-color: #0b5ed7;
 }
 
-.gallscope-dark-theme #___SCOPE_INPUT_MODAL_ID___ .modal-cancel-btn:hover {
+.gallscope-dark-theme .modal-cancel-btn:hover {
     background-color: #5a6268;
 }
 
@@ -842,14 +810,6 @@
     border-color: #007bff;
 }
 
-.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn:hover {
-    background-color: #0056b3;
-}
-
-.gallscope-light-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn:hover {
-    background-color: #e9ecef;
-}
-
 .gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input {
     border: 1px solid #555;
     background-color: #2c2d30;
@@ -859,16 +819,6 @@
 .gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .sheet-id-input:focus {
     border-color: #0d6efd;
 }
-
-.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-confirm-btn:hover {
-    background-color: #0b5ed7;
-}
-
-.gallscope-dark-theme #___EXPORT_BAN_LIST_MODAL_ID___ .modal-cancel-btn:hover {
-    background-color: #5a6268;
-}
-
-
 
 #gallscopeProgressContainer {
     margin-top: 8px;
