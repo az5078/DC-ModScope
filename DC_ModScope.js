@@ -782,10 +782,10 @@ class UIManager {
     }
 
     async injectStyles() {
-        if (document.getElementById('gallscope-styles')) return;
+        if (document.getElementById('dc-modscope-styles')) return;
 
         console.log('Loading CSS from remote source...');
-        const res = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/css.css');
+        const res = await fetch('https://raw.githubusercontent.com/tristan23612/DC-ModScope/refs/heads/main/data/dcmodscope.css');
 
         if (!res.ok) throw new Error("CSS fetch failed")
         else console.log('CSS loaded successfully');
